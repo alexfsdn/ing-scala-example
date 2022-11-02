@@ -32,7 +32,7 @@ object Config {
 
   def getMap: String = config.getString("map_list")
 
-  def getColumnOrder: String = config.getString("col_order")
+  def getColumnOrder: List[String] = config.getString("col_order").split(",").toList
 
   def getUrlHdfs: String = config.getString("hdfs_url")
 

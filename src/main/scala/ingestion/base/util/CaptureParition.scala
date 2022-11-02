@@ -10,4 +10,8 @@ object CaptureParition {
     fileName.split("\\.").head.split("_").last
   }
 
+  def getOnlyNameFile(pathFile: String) = {
+    pathFile.split("/").last
+  }
+
 }
