@@ -53,27 +53,12 @@ class ConfigTest {
 
     println("format=" + Config.getFormat)
 
-    println(".........")
-    println(".........")
-
-    println("database_control=" + Config.getDataBaseControl)
-
 
     println(".........")
     println(".........")
 
-    println("table_control=" + Config.getTableControl)
-
-
-    println(".........")
-    println(".........")
 
     println("col_order=" + Config.getColumnOrder)
-
-    println(".........")
-    println(".........")
-
-    println("col_order_table_control=" + Config.getTableControl)
 
 
     println(".........")

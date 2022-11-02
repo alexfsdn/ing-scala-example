@@ -14,10 +14,6 @@ class TablesTest {
     println(".........")
 
 
-    println(".........")
-    println(".........")
-
-    println(Tables.TABLE_CONTROL)
   }
 
 }

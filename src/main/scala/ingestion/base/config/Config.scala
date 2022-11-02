@@ -32,13 +32,7 @@ object Config {
 
   def getMap: String = config.getString("map_list")
 
-  def getDataBaseControl: String = config.getString("database_control")
-
-  def getTableControl: String = config.getString("table_control")
-
   def getColumnOrder: String = config.getString("col_order")
-
-  def getControlColumnOrder: String = config.getString("col_order_table_control")
 
   def getUrlHdfs: String = config.getString("hdfs_url")
 
