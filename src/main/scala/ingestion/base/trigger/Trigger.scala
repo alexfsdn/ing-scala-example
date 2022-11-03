@@ -28,7 +28,8 @@ object Trigger extends Serializable {
 
   def run(iSpark: ISpark, ihdfs: Ihdfs, today: TodayUtils): Int = {
 
-    val statusList: util.List[Int] = new ProcessIngestion()
+    //val statusList: util.List[Int] = new ProcessIngestion()
 
+    return 1
   }
 }

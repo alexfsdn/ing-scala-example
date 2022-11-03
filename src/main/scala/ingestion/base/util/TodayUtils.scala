@@ -24,4 +24,12 @@ trait TodayUtils {
   def getTodayOnlyYearMonth(): String
 
 
+  /** *
+   * yyyy-MM-dd HH:mm:ss
+   *
+   * @return
+   */
+  def getTodayWithHours(): String
+
+
 }

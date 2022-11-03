@@ -14,13 +14,17 @@ class TodayUtilsImplTest {
     val todayOnlyNumbers = todayImpl.getTodayOnlyNumbers()
     val yearMonth = todayImpl.getTodayOnlyYearMonth()
 
+    val todayWithHours = todayImpl.getTodayWithHours()
+
     println("today=" + today)
     println("todayOnlyNumbers=" + todayOnlyNumbers)
     println("yearMonth=" + yearMonth)
+    println("todayWithHours=" + todayWithHours)
 
     assert(today.contains("-"))
     assert(!todayOnlyNumbers.contains("-"))
     assert(yearMonth.size == 6)
+    assert(todayWithHours.size > 10)
 
   }
 }

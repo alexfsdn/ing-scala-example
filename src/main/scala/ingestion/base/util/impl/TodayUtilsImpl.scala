@@ -2,7 +2,8 @@ package ingestion.base.util.impl
 
 import ingestion.base.util.TodayUtils
 
-import java.time.LocalDate
+import java.time.format.DateTimeFormatter
+import java.time.{LocalDate, LocalDateTime}
 
 class TodayUtilsImpl extends TodayUtils {
   /** *
@@ -33,4 +34,12 @@ class TodayUtilsImpl extends TodayUtils {
     val month = LocalDate.now().getMonthValue.toString
     year.concat(month)
   }
+
+  /** *
+   * yyyy-MM-dd HH:mm:ss
+   *
+   * @return
+   */
+  override def getTodayWithHours(): String = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")).replace(" ", "T").replace(":", "").replace("-", "")
+
 }

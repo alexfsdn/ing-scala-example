@@ -26,6 +26,7 @@ class ProcessIngestion(iSpark: ISpark, ihdfs: Ihdfs, today: TodayUtils) {
   private lazy val ARCHIVING_ERROR_PATH: String = Config.getArchivingError
   private lazy val JOB_NAME: String = Config.getJobName
   private lazy val INVALID_LINES: String = "_invalid_lines"
+  private lazy val ORIGINAL_LABEL: String = "ORIGINAL"
 
 
   def execute(): util.List[Int] = {
@@ -108,13 +109,38 @@ class ProcessIngestion(iSpark: ISpark, ihdfs: Ihdfs, today: TodayUtils) {
       iSpark.save(dfToSave, TABLE_NAME)
       dfToSave.unpersist()
 
+      val newName = fileName.concat(ORIGINAL_LABEL).concat(today.getTodayWithHours())
+
+      movingAchiving(pathFile, newName)
+
+      if (dfValidLines.count() > 0) {
+        println("...")
+        export(dfValidLines, FORMAT, ARCHIVING_PATH.concat(fileName.concat(today.getTodayWithHours())))
+      }
+
+      if (dfInvalidLines.count() > 0) {
+        println("...")
+        export(dfInvalidLines, FORMAT, ARCHIVING_ERROR_PATH.concat(fileName.concat(today.getTodayWithHours())))
+      }
+
     } catch {
       case _: NullPointerException =>
         return StatusEnums.THERE_IS_NOT_DATA_TO_PROCESS.id
       case _: Exception =>
         return StatusEnums.FAILURE.id
     }
+
+    println("...")
+
     StatusEnums.SUCESS.id
+  }
+
+  private def export(dataFrame: DataFrame, format: String, pathFile: String): Unit = {
+    iSpark.exportFile(dataFrame, format, pathFile)
+  }
+
+  private def movingAchiving(pathFile: String, newName: String): Boolean = {
+    ihdfs.mv(pathFile, ARCHIVING_PATH.concat(newName))
   }
 
   private def getHiveSchema(tableName: String, partitionName: String, timestampName: String, invalidLines: String): StructType = {
