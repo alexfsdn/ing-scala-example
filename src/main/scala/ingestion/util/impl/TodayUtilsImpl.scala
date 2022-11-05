@@ -1,6 +1,6 @@
-package ingestion.base.util.impl
+package ingestion.util.impl
 
-import ingestion.base.util.TodayUtils
+import ingestion.util.TodayUtils
 
 import java.time.format.DateTimeFormatter
 import java.time.{LocalDate, LocalDateTime}

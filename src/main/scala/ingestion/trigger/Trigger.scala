@@ -1,11 +1,11 @@
-package ingestion.base.trigger
+package ingestion.trigger
 
 import ingestion.base.dados.{ISpark, Ihdfs}
 import ingestion.base.dados.impl.{HdfsImpl, SparkImpl}
-import ingestion.base.process.ProcessIngestion
+import ingestion.process.ProcessIngestion
 import ingestion.base.services.SparkSessionServices
-import ingestion.base.util.TodayUtils
-import ingestion.base.util.impl.TodayUtilsImpl
+import ingestion.util.TodayUtils
+import ingestion.util.impl.TodayUtilsImpl
 
 import java.time.{Duration, Instant}
 import java.util

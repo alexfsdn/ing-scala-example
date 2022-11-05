@@ -1,4 +1,4 @@
-package ingestion.base.util
+package ingestion.util
 
 object CaptureParition {
 

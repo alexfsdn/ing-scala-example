@@ -1,4 +1,4 @@
-package ingestion.base.fake.schema
+package ingestion.fake.schema
 
 import org.apache.spark.sql.types.{StringType, StructField, StructType}
 

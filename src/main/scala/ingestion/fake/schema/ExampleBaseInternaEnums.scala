@@ -1,4 +1,4 @@
-package ingestion.base.fake.schema
+package ingestion.fake.schema
 
 object ExampleBaseInternaEnums extends Enumeration {
   type ExampleTable = Value

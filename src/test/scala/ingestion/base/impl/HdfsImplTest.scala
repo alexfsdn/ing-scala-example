@@ -1,9 +1,9 @@
-package ingestion.dados.impl
+package ingestion.base.impl
 
 import ingestion.base.config.Config
 import org.junit.Test
 
-class HdfsServicesImplTest {
+class HdfsImplTest {
 
   @Test def test(): Unit = {
     println("HdfsServicesImplTest test...")

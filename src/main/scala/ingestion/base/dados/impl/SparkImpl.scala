@@ -1,7 +1,7 @@
 package ingestion.base.dados.impl
 
 import ingestion.base.dados.ISpark
-import ingestion.base.util.TodayUtils
+import ingestion.util.TodayUtils
 import org.apache.spark.sql.{DataFrame, SaveMode, SparkSession}
 import org.apache.spark.sql.types.StructType
 

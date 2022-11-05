@@ -1,9 +1,9 @@
-package ingestion.base.fake
+package ingestion.fake
 
 import ingestion.base.dados.ISpark
-import ingestion.base.fake.schema.ExampleBaseInterna
+import ingestion.fake.schema.ExampleBaseInterna
 import ingestion.base.services.SparkSessionServices
-import ingestion.base.util.impl.TodayUtilsImpl
+import ingestion.util.impl.TodayUtilsImpl
 import org.apache.spark.sql.functions.lit
 import org.apache.spark.sql.types.StructType
 import org.apache.spark.sql.{DataFrame, SparkSession}

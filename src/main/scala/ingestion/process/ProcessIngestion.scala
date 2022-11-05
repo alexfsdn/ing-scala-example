@@ -1,9 +1,9 @@
-package ingestion.base.process
+package ingestion.process
 
 import ingestion.base.config.{Config, Tables}
 import ingestion.base.dados.{ISpark, Ihdfs}
 import ingestion.base.enums.StatusEnums
-import ingestion.base.util.{CaptureParition, TodayUtils}
+import ingestion.util.{CaptureParition, TodayUtils}
 import org.apache.spark.sql.DataFrame
 import org.apache.spark.sql.functions.{col, lit}
 import org.apache.spark.sql.types.{StringType, StructType}
@@ -29,7 +29,7 @@ class ProcessIngestion(iSpark: ISpark, ihdfs: Ihdfs, today: TodayUtils) {
   private lazy val ORIGINAL_LABEL: String = "ORIGINAL"
 
 
-  def execute(): util.List[Int] = {
+  def run(): util.List[Int] = {
 
     println("Starting...")
     println(s"Job execution $JOB_NAME")
@@ -100,6 +100,11 @@ class ProcessIngestion(iSpark: ISpark, ihdfs: Ihdfs, today: TodayUtils) {
       val ingestionTimeStamp = today.getToday()
 
       val dfValidLines: DataFrame = getValidLines(df, INVALID_LINES).persist
+
+      if (dfValidLines.count() <= 0) {
+        println("...")
+        throw new NullPointerException(s"There is no data to process $fileName")
+      }
 
       val dfToSave = dfValidLines
         .withColumn(TIMESTAMP_NAME, lit(ingestionTimeStamp))

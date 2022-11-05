@@ -1,6 +1,6 @@
 package ingestion.utils.impl
 
-import ingestion.base.util.impl.TodayUtilsImpl
+import ingestion.util.impl.TodayUtilsImpl
 import org.junit.Test
 
 class TodayUtilsImplTest {

@@ -1,6 +1,6 @@
 package ingestion.utils
 
-import ingestion.base.util.CaptureParition
+import ingestion.util.CaptureParition
 import org.junit.Test
 
 class CapturePartitionTest {

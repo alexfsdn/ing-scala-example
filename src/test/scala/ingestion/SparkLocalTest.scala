@@ -1,6 +1,8 @@
 package ingestion
 
 import ingestion.base.services.SparkSessionServices
+import ingestion.model.ExampleDataFrame
+import ingestion.util.impl.TodayUtilsImpl
 import org.apache.spark.sql.functions.lit
 import org.junit.{Before, Test}
 
@@ -27,5 +29,18 @@ class SparkLocalTest {
     val result = dataFrameExample.withColumn("data", lit(LocalDate.now().toString))
 
     result.show(10, false)
+  }
+
+  @Test def test(): Unit = {
+    val spark = new SparkSessionServices().connectDevLocal
+
+    val exampleDataFrame = new ExampleDataFrame("alex", "30", "11111111", new TodayUtilsImpl().getToday())
+
+    import spark.implicits._
+
+    val exampleDf = spark.createDataset(Seq(exampleDataFrame))
+
+    exampleDf.toDF().show(100, false)
+
   }
 }
