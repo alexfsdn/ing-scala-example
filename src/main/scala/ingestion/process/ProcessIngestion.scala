@@ -137,7 +137,7 @@ class ProcessIngestion(iSpark: ISpark, ihdfs: Ihdfs, today: TodayUtils) {
 
     println("...")
 
-    StatusEnums.SUCESS.id
+    StatusEnums.SUCCESS.id
   }
 
   private def export(dataFrame: DataFrame, format: String, pathFile: String): Unit = {

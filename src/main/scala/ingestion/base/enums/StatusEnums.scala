@@ -17,8 +17,12 @@ object StatusEnums extends Enumeration {
       return FAILURE.id
     } else if (success == false && failure == true && notData == false) {
       return FAILURE.id
+    } else if (success == true && failure == false && notData == true) {
+      return SUCCESS.id
     } else if (success == false && failure == false && notData == true) {
       return THERE_IS_NOT_DATA_TO_PROCESS.id
+    } else if (success == false && failure == true && notData == true) {
+      return FAILURE.id
     }
 
     StatusEnums.SUCCESS.id
