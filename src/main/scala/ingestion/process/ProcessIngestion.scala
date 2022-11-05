@@ -25,15 +25,17 @@ class ProcessIngestion(iSpark: ISpark, ihdfs: Ihdfs, today: TodayUtils) {
   private lazy val ARCHIVING_PATH: String = Config.getArchiving
   private lazy val ARCHIVING_ERROR_PATH: String = Config.getArchivingError
   private lazy val JOB_NAME: String = Config.getJobName
-  private lazy val INVALID_LINES: String = "_invalid_lines"
+  private lazy val INVALID_LINES: String = "_corrupt_record"
   private lazy val ORIGINAL_LABEL: String = "ORIGINAL"
 
 
   def run(): util.List[Int] = {
 
     println("Starting...")
-    println(s"Job execution $JOB_NAME")
 
+    initParameters
+
+    println(s"Job execution $JOB_NAME")
     println("format=" + FORMAT)
     println("table=" + TABLE_NAME)
     println("file_name=" + FILE_NAME)
@@ -44,7 +46,7 @@ class ProcessIngestion(iSpark: ISpark, ihdfs: Ihdfs, today: TodayUtils) {
     println("archiving_error=" + ARCHIVING_ERROR_PATH)
     println("partition_name=" + PARTITION_NAME)
     println("timestamp=" + TIMESTAMP_NAME)
-
+    println("parameters=" + parameters.toString())
     println(s"Step 1... Listing all files to this process $INPUT_PATH")
 
     val status = new util.ArrayList[Int]
@@ -64,7 +66,7 @@ class ProcessIngestion(iSpark: ISpark, ihdfs: Ihdfs, today: TodayUtils) {
       if (pathFile.contains(FILE_NAME)) {
         println(s"Verifying transfer file done: $pathFile")
 
-        val statusIngestion = processIngestion(pathFile)
+        val statusIngestion = process(pathFile)
         status.add(statusIngestion)
       }
 
@@ -73,11 +75,11 @@ class ProcessIngestion(iSpark: ISpark, ihdfs: Ihdfs, today: TodayUtils) {
     status
   }
 
-  def processIngestion(pathFile: String): Int = {
+  def process(pathFile: String): Int = {
     try {
       println("Step 3.... capturing the file name")
 
-      val fileName = CaptureParition.captureParition(pathFile)
+      val fileName = CaptureParition.getOnlyNameFile(pathFile)
 
       val exist: Boolean = ihdfs.exist(pathFile)
 
@@ -94,17 +96,38 @@ class ProcessIngestion(iSpark: ISpark, ihdfs: Ihdfs, today: TodayUtils) {
 
       val df: DataFrame = getFile(pathFile, FORMAT, parameters, schema)
 
+      val totalLines = df.count()
+
+      println(s"Step 6... capturing invalid lines")
+
       val dfInvalidLines: DataFrame = getInvalidLines(df, INVALID_LINES).persist
+
+      val totalInvalidesLines = dfInvalidLines.count()
+
+      println(s"... total invalid lines $totalInvalidesLines")
+
+      if (totalLines == totalInvalidesLines) {
+        println("There is no data to process")
+        throw new NullPointerException(s"There is no data to process $fileName")
+      }
 
       val partitionName = CaptureParition.getOnlyNameFile(pathFile)
       val ingestionTimeStamp = today.getToday()
 
+      println(s"Step 7... capturing valid lines")
+
       val dfValidLines: DataFrame = getValidLines(df, INVALID_LINES).persist
 
-      if (dfValidLines.count() <= 0) {
-        println("...")
+      val totalValidesLines = dfValidLines.count()
+
+      println(s"... total invalid lines $totalValidesLines")
+
+      if (totalValidesLines <= 0) {
+        println("There is no data to process")
         throw new NullPointerException(s"There is no data to process $fileName")
       }
+
+      println(s"Step 8... ingestion data in the $TABLE_NAME")
 
       val dfToSave = dfValidLines
         .withColumn(TIMESTAMP_NAME, lit(ingestionTimeStamp))
@@ -119,12 +142,12 @@ class ProcessIngestion(iSpark: ISpark, ihdfs: Ihdfs, today: TodayUtils) {
       movingAchiving(pathFile, newName)
 
       if (dfValidLines.count() > 0) {
-        println("...")
+        println(s"Step 9... exporting valid lines to archiving path $ARCHIVING_PATH")
         export(dfValidLines, FORMAT, ARCHIVING_PATH.concat(fileName.concat(today.getTodayWithHours())))
       }
 
       if (dfInvalidLines.count() > 0) {
-        println("...")
+        println(s"Step 10... exporting invalid lines to archiving path error $ARCHIVING_ERROR_PATH")
         export(dfInvalidLines, FORMAT, ARCHIVING_ERROR_PATH.concat(fileName.concat(today.getTodayWithHours())))
       }
 
@@ -134,8 +157,6 @@ class ProcessIngestion(iSpark: ISpark, ihdfs: Ihdfs, today: TodayUtils) {
       case _: Exception =>
         return StatusEnums.FAILURE.id
     }
-
-    println("...")
 
     StatusEnums.SUCCESS.id
   }

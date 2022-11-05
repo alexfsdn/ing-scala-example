@@ -8,26 +8,24 @@ import ingestion.fake.SparkImplFake
 import ingestion.fake.schema.ExampleBaseInterna
 import ingestion.util.TodayUtils
 import org.apache.spark.sql.SparkSession
-import org.apache.spark.sql.functions.lit
 import org.apache.spark.sql.types.StringType
 import org.junit.{Before, Test}
 import org.mockito.Mockito.{mock, times, verify, when}
 
 import java.io.File
-import java.time.LocalDate
 
-class IngestionTest {
+class ProcessIngestionTest {
 
   private var PATH: String = null
   private var PATH_2: String = null
-  private val INGESTIOM_PATH = Config.getIngestionName
+  private val INGESTIOM_PATH = Config.getInputPath
 
   private var today: TodayUtils = null
   private var iSpark: ISpark = null
   private var iHdfs: Ihdfs = null
   private var spark: SparkSession = null
 
-  private lazy val INVALID_LINES: String = "_invalid_lines"
+  private lazy val INVALID_LINES: String = "_corrupt_record"
 
   @Before
   def configMocks(): Unit = {
@@ -46,8 +44,10 @@ class IngestionTest {
     when(today.getTodayWithHours()).thenReturn("20220812T162015")
     when(today.getToday()).thenReturn("20220812")
 
-    val spark = new SparkSessionServices().connectDevLocal
+    spark = new SparkSessionServices().connectDevLocal
+  }
 
+  @Test def processSuccess(): Unit = {
     val dataFrameExample = spark.read.option("header", "true").option("delimiter", ";").csv(PATH)
 
     dataFrameExample.show(10, false)
@@ -60,20 +60,35 @@ class IngestionTest {
 
     iHdfs = mock(classOf[Ihdfs])
 
-    when(iHdfs.lsAll(INGESTIOM_PATH)).thenReturn(List(PATH))
+    //val pathOne = PATH.replace("\\", "/")
+    //val pathTwo = PATH_2.replace("\\", "/")
+
+    when(iHdfs.lsAll(INGESTIOM_PATH)).thenReturn(List(PATH, PATH_2))
     when(iHdfs.exist(PATH)).thenReturn(true)
     when(iHdfs.exist(PATH_2)).thenReturn(true)
 
-  }
-
-  @Test def processSuccess(): Unit = {
     val statusList = new ProcessIngestion(new SparkImplFake(spark), iHdfs, today).run()
 
     val status = StatusEnums.validStatus(statusList)
 
-    assert(status == StatusEnums.SUCCESS)
+    assert(status == StatusEnums.SUCCESS.id)
     verify(iHdfs, times(1)).exist(PATH)
     verify(iHdfs, times(1)).exist(PATH_2)
   }
 
+  @Test def processNoData(): Unit = {
+    iHdfs = mock(classOf[Ihdfs])
+
+    //val pathOne = PATH.replace("\\", "/")
+    //val pathTwo = PATH_2.replace("\\", "/")
+
+    when(iHdfs.lsAll(INGESTIOM_PATH)).thenReturn(List())
+
+    val statusList = new ProcessIngestion(new SparkImplFake(spark), iHdfs, today).run()
+
+    val status = StatusEnums.validStatus(statusList)
+
+    assert(status == StatusEnums.THERE_IS_NOT_DATA_TO_PROCESS.id)
+    verify(iHdfs, times(0)).exist(PATH)
+  }
 }
