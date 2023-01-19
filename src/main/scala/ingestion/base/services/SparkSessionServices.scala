@@ -11,7 +11,7 @@ class SparkSessionServices {
         .set("hive.exec.dynamic.partition.mode", "nonstrict")
         .set("spark.some.config.option", "some-value")
 
-      val spark = SparkSession.builder().master("local")
+      val spark = SparkSession.builder().master("local[2]")
         .appName("spark local")
         .config(conf)
         .getOrCreate()
@@ -29,8 +29,8 @@ class SparkSessionServices {
         .set("hive.exec.dynamic.partition.mode", "nonstrict")
         .set("spark.some.config.option", "some-value")
 
-      val spark = SparkSession.builder().master("local")
-        .appName("spark local")
+      val spark = SparkSession.builder().master("yarn")
+        .appName("spark prd yan")
         .config(conf)
         .enableHiveSupport()
         .getOrCreate()
