@@ -22,7 +22,7 @@ class SparkLocalTest {
 
 
   @Test def testSparkLocal(): Unit = {
-    val spark = new SparkSessionServices().connectDevLocal
+    val spark = new SparkSessionServices().devLocal
 
     val dataFrameExample = spark.read.option("header", "true").option("delimiter", ";").csv(PATH)
 
@@ -32,7 +32,7 @@ class SparkLocalTest {
   }
 
   @Test def test(): Unit = {
-    val spark = new SparkSessionServices().connectDevLocal
+    val spark = new SparkSessionServices().devLocal
 
     val exampleDataFrame = new ExampleDataFrame("alex", "30", "11111111", new TodayUtilsImpl().getToday())
 

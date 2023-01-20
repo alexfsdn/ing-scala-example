@@ -14,7 +14,7 @@ object Trigger extends Serializable {
 
   def main(args: Array[String]): Unit = {
     val start = Instant.now()
-    val spark = new SparkSessionServices().connectProd
+    val spark = new SparkSessionServices().prd
     val iSpark = new SparkImpl(spark)
     val ihdfs = new HdfsImpl()
 
@@ -22,6 +22,8 @@ object Trigger extends Serializable {
 
     val end = Instant.now()
     val duration = Duration.between(start, end)
+
+    println(duration.toMinutes)
 
     System.exit(statusFinal)
   }

@@ -5,7 +5,7 @@ import org.apache.spark.sql.SparkSession
 
 class SparkSessionServices {
 
-  def connectDevLocal: SparkSession = {
+  def devLocal: SparkSession = {
     try {
       val conf = new SparkConf().setAppName("App Name example dev")
         .set("hive.exec.dynamic.partition.mode", "nonstrict")
@@ -23,14 +23,14 @@ class SparkSessionServices {
     }
   }
 
-  def connectProd: SparkSession = {
+  def prd: SparkSession = {
     try {
       val conf = new SparkConf().setAppName("App Name example prod")
         .set("hive.exec.dynamic.partition.mode", "nonstrict")
         .set("spark.some.config.option", "some-value")
 
       val spark = SparkSession.builder().master("yarn")
-        .appName("spark prd yan")
+        .appName("spark prd yarn")
         .config(conf)
         .enableHiveSupport()
         .getOrCreate()

@@ -129,4 +129,8 @@ class SparkImpl(spark: SparkSession) extends ISpark with Serializable {
   override def getHiveSchema(tableName: String, partition: String, timestampColumn: String): StructType = {
     spark.table(tableName).drop(partition).drop(timestampColumn).schema
   }
+
+  override def get(query: String): DataFrame = {
+    spark.sql(query)
+  }
 }

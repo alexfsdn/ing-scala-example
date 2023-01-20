@@ -15,20 +15,30 @@ class SparkImplFake(spark: SparkSession) extends ISpark {
 
     println("gravando... FAKE")
 
-    dataFrame.show(100, false)
+    dataFrame.createOrReplaceTempView("tabela_fake_temp")
+
+    spark.sql("select * from tabela_fake_temp").show(100, false)
 
   }
 
   override def get(columns: Array[String], tableName: DataFrame, partitionName: String, partitions: Array[String]): DataFrame = {
-    val file = new File("src/test/resources/mock_example_20220812.csv")
-    val fileAux = new File(file.getAbsolutePath)
-    val path = fileAux.getAbsolutePath
+    try {
 
-    val spark = new SparkSessionServices().connectDevLocal
+      val sqlCommand =
+        s"""
+           |SELECT ${columns.mkString(",")}
+           |FROM ${tableName}
+           |WHERE ${partitionName} IN ($partitions)
+           |""".stripMargin
 
-    val dataFrameExample = spark.read.option("header", "true").option("delimiter", ";").csv(path)
+      spark.sql(sqlCommand)
 
-    dataFrameExample.withColumn("data", lit(new TodayUtilsImpl().getTodayOnlyNumbers()))
+    } catch {
+      case ex: Exception =>
+        println("Filed to query")
+        println(ex.getMessage)
+        throw ex
+    }
   }
 
   override def exportFile(dataFrame: DataFrame, format: String, pathFileName: String): Unit = {
@@ -58,7 +68,7 @@ class SparkImplFake(spark: SparkSession) extends ISpark {
     val fileAux = new File(file.getAbsolutePath)
     val path = fileAux.getAbsolutePath
 
-    val spark = new SparkSessionServices().connectDevLocal
+    val spark = new SparkSessionServices().devLocal
 
     val dataFrameExample = spark.read.option("header", "true").option("delimiter", ";").csv(path)
 
@@ -69,5 +79,9 @@ class SparkImplFake(spark: SparkSession) extends ISpark {
 
   override def getHiveSchema(tableName: String, partition: String, timestampColumn: String): StructType = {
     ExampleBaseInterna.exampleTableInternalSchema
+  }
+
+  override def get(query: String): DataFrame = {
+    spark.sql(query)
   }
 }

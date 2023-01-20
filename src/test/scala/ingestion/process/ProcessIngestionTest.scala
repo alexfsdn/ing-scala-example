@@ -44,7 +44,7 @@ class ProcessIngestionTest {
     when(today.getTodayWithHours()).thenReturn("20220812T162015")
     when(today.getToday()).thenReturn("20220812")
 
-    spark = new SparkSessionServices().connectDevLocal
+    spark = new SparkSessionServices().devLocal
   }
 
   @Test def processSuccess(): Unit = {

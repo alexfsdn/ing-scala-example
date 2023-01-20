@@ -9,11 +9,13 @@ trait ISpark {
 
   def get(columns: Array[String] = Array("*"), tableName: DataFrame, partitionName: String, partitions: Array[String] = Array("*")): DataFrame
 
+  def get(query: String): DataFrame
+
   def exportFile(dataFrame: DataFrame, format: String, pathFileName: String): Unit
 
   def getFile(pathFileName: String, format: String, header: Boolean, delimiter: String, schema: StructType): DataFrame
 
-  def getFile(pathFileName: String,format:String, map: Map[String, String], schema: StructType): DataFrame
+  def getFile(pathFileName: String, format: String, map: Map[String, String], schema: StructType): DataFrame
 
   def getFile(pathFileName: String, format: String, header: Boolean, delimiter: String): DataFrame
 
