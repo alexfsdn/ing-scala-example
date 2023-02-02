@@ -1,10 +1,15 @@
 package ingestion
 
+import ingestion.base.dados.Ihdfs
+import ingestion.base.enums.StatusEnums
 import ingestion.base.services.SparkSessionServices
+import ingestion.fake.SparkImplFake
 import ingestion.model.ExampleDataFrame
+import ingestion.process.ProcessIngestion
 import ingestion.util.impl.TodayUtilsImpl
 import org.apache.spark.sql.functions.lit
 import org.junit.{Before, Test}
+import org.mockito.Mockito.{mock, times, verify, when}
 
 import java.io.File
 import java.time.LocalDate
@@ -40,7 +45,29 @@ class SparkLocalTest {
 
     val exampleDf = spark.createDataset(Seq(exampleDataFrame))
 
-    exampleDf.toDF().show(100, false)
+    exampleDf.toDF().show(10, false)
+
+  }
+
+  @Test def testRemoveErrorLines(): Unit = {
+    val PATH = new File(new File("src/test/resources/mock_example_20220813.csv").getAbsolutePath).getAbsolutePath
+
+    val spark = new SparkSessionServices().devLocal
+
+    val dataFrameExample = spark.read.option("header", "true")
+      //removendo linhas erradas
+      .option("mode", "DROPMALFORMED")
+      //
+      .option("delimiter", ";").csv(PATH)
+
+    val result = dataFrameExample.withColumn("data", lit(LocalDate.now().toString))
+
+    result.show(10, false)
+
+    // o arquivo tem 5 linhas, mas uma linha está errada.
+    // nosso programa deve descartar as linhas erradas, então nosso data frame deve
+    // possuir apenas 4 linhas
+    assert(result.collect().size == 4)
 
   }
 }
