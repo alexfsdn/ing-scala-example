@@ -1,8 +1,25 @@
 # ing-example
-ingestão de exemplo
 
-1. É interessante utilizar uma IDE que lhe permita debugar.
-2. Para entender o processo basta ir na pasta de /src/test/scala/process e executar o teste em modo debug.
-3. Utilizei apenas a memória, por isso, não é necessário docker ou qualquer ambiente para executar. Eu criei os mocks, por isso, assim conseguirá baixar a aplicação facilmente e executar em debug para compreender como os dados são manipulados.
+Esse projeto tem alguns objetivos simples:
 
-OBS: Só testei no Windows.
+1. Apresentar uma simples ingestão de dados em uma tabela do hive (você pode encontrar a ingestão implementada aqui - > https://github.com/alexfsdn/ing-example/blob/main/src/main/scala/ingestion/process/ProcessIngestion.scala).
+
+2. Apresentar como podemos criar testes unitários e trabalhar com o spark apenas utilizando memória, assim, sendo necessário adotar o paradigma orientação a objeto e aplicando na prática a injeção de dependência, possibilitando mockar determinados componentes que acessam recursos externos a nossa aplicação, que, no qual, não é interessante para nossos testes unitários, que tem como objetivo testar o fluxo (você pode encontrar o teste unitário do ProcessIngestion mecionado acima aqui - > https://github.com/alexfsdn/ing-example/blob/main/src/test/scala/ingestion/process/ProcessIngestionTest.scala). 
+
+
+3. Apresentar como é possível usar/agregar de conceitos/métodos de engenharia de software na construção de um processo de engenharia de dados.
+
+O que eu usei?
+
+IDE intellij
+Java 1.8
+Scala-sdk-2.11.12
+Spark 2.4.7
+JUnit (invés do Scala Test)
+Mockito
+Windows 10
+SBT
+
+Apesar da ideia é demonstrar como podemos fazer uso apenas da memória para construir nossa aplicação de ingestão com Spark, é claro que você pode gerar um jar e testar em um ambiente que tenha o Spark, irá funcionar, eu testei!! Para isso deve olhar para o arquivo https://github.com/alexfsdn/ing-example/blob/main/src/main/resources/application.properties e configurar os parâmetros de acordo com o seu ambiente. E o seu start se encontra aqui -> https://github.com/alexfsdn/ing-example/blob/main/src/main/scala/ingestion/trigger/Trigger.scala aqui conseguirá ver nitidamente os recursos reais do hdfs e do spark. Na aplicação temos implementado o código que lê arquivos no hdfs e temos código do spark que faz ingestão dos dados e outras coisas mais.
+
+Esse readme orienta apenas como testar o ProcessIngestion, porém existe outras classes/processos que envetualmente decidi subir para guardar, esses processos cabe você explorar caso tenha interesse.
