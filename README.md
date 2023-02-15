@@ -15,10 +15,10 @@ IDE intellij
 Java 1.8
 Scala-sdk-2.11.12
 Spark 2.4.7
+SBT
 JUnit (invés do Scala Test)
 Mockito
 Windows 10
-SBT
 
 Apesar da ideia é demonstrar como podemos fazer uso apenas da memória para construir nossa aplicação de ingestão com Spark, é claro que você pode gerar um jar e testar em um ambiente que tenha o Spark, irá funcionar, eu testei!! Para isso deve olhar para o arquivo https://github.com/alexfsdn/ing-example/blob/main/src/main/resources/application.properties e configurar os parâmetros de acordo com o seu ambiente. E o seu start se encontra aqui -> https://github.com/alexfsdn/ing-example/blob/main/src/main/scala/ingestion/trigger/Trigger.scala aqui conseguirá ver nitidamente os recursos reais do hdfs e do spark. Na aplicação temos implementado o código que lê arquivos no hdfs e temos código do spark que faz ingestão dos dados e outras coisas mais.
 
