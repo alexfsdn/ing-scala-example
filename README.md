@@ -16,7 +16,7 @@ Java 1.8
 Scala-sdk-2.11.12
 Spark 2.4.7
 SBT
-JUnit (invés do Scala Test)
+JUnit (ao invés do Scala Test)
 Mockito
 Windows 10
 
