@@ -23,3 +23,13 @@ Windows 10
 Apesar da ideia é demonstrar como podemos fazer uso apenas da memória para construir nossa aplicação de ingestão com Spark, é claro que você pode gerar um jar e testar em um ambiente que tenha hdfs e Spark, irá funcionar, eu testei!! Para isso deve olhar para o arquivo https://github.com/alexfsdn/ing-example/blob/main/src/main/resources/application.properties e configurar os parâmetros de acordo com o seu ambiente. E o seu start se encontra aqui -> https://github.com/alexfsdn/ing-example/blob/main/src/main/scala/ingestion/trigger/Trigger.scala aqui conseguirá ver nitidamente os recursos reais do hdfs e do spark. Na aplicação tenho implementado o código que lê arquivos no hdfs e temos o código do spark que faz ingestão dos dados, e, outras coisas mais.
 
 Esse readme orienta apenas como testar o ProcessIngestion, porém existe outras classes/processos que envetualmente decidi subir para guardar, esses processos cabe você explorar caso tenha interesse.
+
+
+ATENÇÃO para um problema improvavél, mas que porvetura possa vir acontecer com alguém:
+
+Para os testes com os mocks, basta passarmos o path a partir da pasta "src", como por exemplo, "src/test/resources/mock_example_20220812.csv", porém se tiver problemas e seu teste não conseguir encontrar o arquivo, você pode fazer de um jeito diferente conforme apresentado aqui -> https://github.com/alexfsdn/ing-example/blob/main/src/test/scala/ingestion/SparkLocalTest.scala
+
+"um  pedaço do código"
+" val file = new File("src/test/resources/mock_example_20220812.csv")
+    val fileAux = new File(file.getAbsolutePath)
+    PATH = fileAux.getAbsolutePath"
