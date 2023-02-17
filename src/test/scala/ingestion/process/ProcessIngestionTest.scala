@@ -12,8 +12,6 @@ import org.apache.spark.sql.types.StringType
 import org.junit.{Before, Test}
 import org.mockito.Mockito.{mock, times, verify, when}
 
-import java.io.File
-
 class ProcessIngestionTest {
 
   private var PATH: String = null
@@ -21,7 +19,6 @@ class ProcessIngestionTest {
   private val INGESTIOM_PATH = Config.getInputPath
 
   private var today: TodayUtils = null
-  private var iSpark: ISpark = null
   private var iHdfs: Ihdfs = null
   private var spark: SparkSession = null
 
@@ -29,9 +26,8 @@ class ProcessIngestionTest {
 
   @Before
   def configMocks(): Unit = {
-    val file = new File("src/test/resources/mock_example_20220812.csv")
-    val fileAux = new File(file.getAbsolutePath)
-    PATH = fileAux.getAbsolutePath
+    PATH = "src/test/resources/mock_example_20220812.csv"
+    PATH_2 = "src/test/resources/mock_example_20220813.csv"
 
     val deltaSchema = ExampleBaseInterna.exampleTableInternalSchema
     val schema = deltaSchema.add(INVALID_LINES, StringType, true)
@@ -49,13 +45,9 @@ class ProcessIngestionTest {
 
   @Test def processSuccess(): Unit = {
     val dataFrameExample = spark.read.option("header", "true").option("delimiter", ";").csv(PATH)
-
     dataFrameExample.show(10, false)
 
-    PATH_2 = PATH.replace("_20220812.csv", "").concat("_20220813.csv")
-
     val dataFrameExample2 = spark.read.option("header", "true").option("delimiter", ";").csv(PATH_2)
-
     dataFrameExample2.show(10, false)
 
     iHdfs = mock(classOf[Ihdfs])
