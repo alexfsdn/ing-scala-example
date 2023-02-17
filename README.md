@@ -25,7 +25,7 @@ Apesar da ideia é demonstrar como podemos fazer uso apenas da memória para con
 Esse readme orienta apenas como testar o ProcessIngestion, porém existe outras classes/processos que envetualmente decidi subir para guardar, esses processos cabe você explorar caso tenha interesse.
 
 
-ATENÇÃO para um problema improvavél, mas não impossível:
+ATENÇÃO para um problema improvavél, mas que porvetura possa vir acontecer com alguém:
 
 Para os testes com os mocks, basta passarmos o path a partir da pasta "src", como por exemplo, "src/test/resources/mock_example_20220812.csv", porém se tiver problemas e seu teste não conseguir encontrar o arquivo, você pode fazer de um jeito diferente conforme apresentado aqui -> https://github.com/alexfsdn/ing-example/blob/main/src/test/scala/ingestion/SparkLocalTest.scala
 
