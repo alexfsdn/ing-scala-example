@@ -4,6 +4,9 @@ Esse projeto tem alguns objetivos simples:
 
 1. Apresentar uma simples ingestão de dados em uma tabela do hive (você pode encontrar a ingestão implementada aqui - > https://github.com/alexfsdn/ing-example/blob/main/src/main/scala/ingestion/process/ProcessIngestion.scala).
 
+![image](https://user-images.githubusercontent.com/51302698/219902132-54016da0-73cc-4e2d-9230-694e3ce94e72.png)
+
+
 2. Apresentar como podemos criar testes unitários e trabalhar com o spark apenas utilizando memória, assim, sendo necessário adotar o paradigma orientação a objeto e aplicando na prática a injeção de dependência, possibilitando mockar determinados componentes, os quais, acessam recursos externos a nossa aplicação, que, no qual, não é interessante para nossos testes unitários, que tem como objetivo testar o fluxo apenmas (você pode encontrar o teste unitário do ProcessIngestion mencionado acima aqui - > https://github.com/alexfsdn/ing-example/blob/main/src/test/scala/ingestion/process/ProcessIngestionTest.scala). 
 
 
