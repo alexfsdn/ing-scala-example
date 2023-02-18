@@ -4,10 +4,14 @@ Esse projeto tem alguns objetivos simples:
 
 1. Apresentar uma simples ingestão de dados em uma tabela do hive (você pode encontrar a ingestão implementada aqui - > https://github.com/alexfsdn/ing-example/blob/main/src/main/scala/ingestion/process/ProcessIngestion.scala).
 
-![image](https://user-images.githubusercontent.com/51302698/219902132-54016da0-73cc-4e2d-9230-694e3ce94e72.png)
+
+![image](https://user-images.githubusercontent.com/51302698/219902183-154301ef-7e6f-4358-af06-b5824d47e247.png)
 
 
 2. Apresentar como podemos criar testes unitários e trabalhar com o spark apenas utilizando memória, assim, sendo necessário adotar o paradigma orientação a objeto e aplicando na prática a injeção de dependência, possibilitando mockar determinados componentes, os quais, acessam recursos externos a nossa aplicação, que, no qual, não é interessante para nossos testes unitários, que tem como objetivo testar o fluxo apenmas (você pode encontrar o teste unitário do ProcessIngestion mencionado acima aqui - > https://github.com/alexfsdn/ing-example/blob/main/src/test/scala/ingestion/process/ProcessIngestionTest.scala). 
+
+
+![image](https://user-images.githubusercontent.com/51302698/219902132-54016da0-73cc-4e2d-9230-694e3ce94e72.png)
 
 
 3. Apresentar como é possível usar/agregar de conceitos/métodos de engenharia de software na construção de um processo de engenharia de dados.
@@ -33,6 +37,6 @@ ATENÇÃO para um problema improvavél, mas que porvetura possa vir acontecer co
 Para os testes com os mocks, basta passarmos o path a partir da pasta "src", como por exemplo, "src/test/resources/mock_example_20220812.csv", porém se tiver problemas e seu teste não conseguir encontrar o arquivo, você pode fazer de um jeito diferente conforme apresentado aqui -> https://github.com/alexfsdn/ing-example/blob/main/src/test/scala/ingestion/SparkLocalTest.scala
 
 "um  pedaço do código"
-" val file = new File("src/test/resources/mock_example_20220812.csv")
-    val fileAux = new File(file.getAbsolutePath)
-    PATH = fileAux.getAbsolutePath"
+
+![image](https://user-images.githubusercontent.com/51302698/219902209-27964dbf-e315-4a71-a2fa-4a7851c5750f.png)
+
