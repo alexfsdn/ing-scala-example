@@ -3,7 +3,7 @@ package ingestion.process
 import ingestion.base.dados.ISpark
 import ingestion.base.enums.StatusEnums
 import ingestion.util.{TodayUtils, ValidParamUtils}
-import org.apache.spark.sql.functions.{col, lit, substring}
+import org.apache.spark.sql.functions.{col, lit, substring, sum}
 
 class PlayListTheYear(iSpark: ISpark, today: TodayUtils, validParamUtils: ValidParamUtils) {
   private var TABLE_NAME_INGESTION = ""

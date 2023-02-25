@@ -46,6 +46,8 @@ class PlayListTheYearTest {
     val tableNameIngestion = ""
     val year = "2022"
 
+    val valid = mock(classOf[ValidParamUtils])
+
     when(valid.dataBaseTableValid(userTable)).thenReturn(true)
     when(valid.dataBaseTableValid(playListTable)).thenReturn(true)
     when(valid.dataBaseTableValid(tableNameIngestion)).thenReturn(true)
