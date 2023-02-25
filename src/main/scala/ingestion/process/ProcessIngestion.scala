@@ -31,7 +31,7 @@ class ProcessIngestion(iSpark: ISpark, ihdfs: Ihdfs, today: TodayUtils) {
 
   def run(): util.List[Int] = {
 
-    println("Starting...")
+    println("Starting... ".concat(getClass.getSimpleName))
 
     initParameters
 
