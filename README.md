@@ -32,7 +32,7 @@ Apesar da ideia desse pequeno projeto é demonstrar como podemos fazer uso apena
 Esse readme orienta apenas como testar o ProcessIngestion, porém existe outras classes/processos que envetualmente decidi subir para guardar, esses processos cabe você explorar caso tenha interesse.
 
 outros processos:
-PlayListTheYear.class (teste usando a classe PlayListTheYearTest) 
+https://github.com/alexfsdn/ing-example/blob/main/src/main/scala/ingestion/process/PlayListTheYear.scala (teste usando a classe https://github.com/alexfsdn/ing-example/blob/main/src/test/scala/ingestion/process/PlayListTheYearTest.scala) 
 
 
 ATENÇÃO para um problema improvavél, mas que porvetura possa vir acontecer com alguém:
