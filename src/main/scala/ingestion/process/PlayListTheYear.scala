@@ -3,7 +3,7 @@ package ingestion.process
 import ingestion.base.dados.ISpark
 import ingestion.base.enums.StatusEnums
 import ingestion.util.{TodayUtils, ValidParamUtils}
-import org.apache.spark.sql.functions.{avg, col, collect_set, count, countDistinct, current_date, date_format, first, last, lit, max, mean, min, substring, sum, sumDistinct, when}
+import org.apache.spark.sql.functions.{avg, col, collect_set, count, countDistinct, current_date, current_timestamp, date_format, first, last, lit, max, mean, min, substring, sum, sumDistinct, when}
 
 class PlayListTheYear(iSpark: ISpark, today: TodayUtils, validParamUtils: ValidParamUtils) {
   private var TABLE_NAME_INGESTION = ""
@@ -86,7 +86,7 @@ class PlayListTheYear(iSpark: ISpark, today: TodayUtils, validParamUtils: ValidP
 
       println(s"building dfToSave ...")
       val dfToSave = dfPerfil
-        .withColumn("timestamp", current_date())
+        .withColumn("timestamp", current_timestamp)
         .withColumn("dat_partition", lit(partitionName))
         .withColumn("dat_ref_format", date_format(col("timestamp"), "MM-dd-yyyy"))
         .select(

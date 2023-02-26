@@ -1,4 +1,6 @@
-package ingestion.util
+package ingestion.util.impl
+
+import ingestion.util.ValidParamUtils
 
 class ValidParamUtilsImpl extends ValidParamUtils {
 

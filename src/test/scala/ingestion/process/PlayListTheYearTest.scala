@@ -3,7 +3,8 @@ package ingestion.process
 import ingestion.base.enums.StatusEnums
 import ingestion.base.services.SparkSessionServices
 import ingestion.fake.SparkImplFake
-import ingestion.util.{TodayUtils, ValidParamUtils, ValidParamUtilsImpl}
+import ingestion.util.impl.ValidParamUtilsImpl
+import ingestion.util.{TodayUtils, ValidParamUtils}
 import org.apache.spark.sql.SparkSession
 import org.junit.{Before, Test}
 import org.mockito.Mockito.{mock, times, verify, when}
@@ -54,6 +55,7 @@ class PlayListTheYearTest {
     when(valid.dataBaseTableValid(year)).thenReturn(true)
 
     val iSpark = new SparkImplFake(spark)
+
 
     val status: Int = new PlayListTheYear(iSpark, today, valid).run(userTable, playListTable, tableNameIngestion, year)
 
