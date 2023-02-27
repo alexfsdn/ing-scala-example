@@ -4,6 +4,7 @@ import ingestion.base.dados.ISpark
 import ingestion.base.enums.StatusEnums
 import ingestion.util.{TodayUtils, ValidParamUtils}
 import org.apache.spark.sql.functions.{avg, col, collect_set, count, countDistinct, current_date, current_timestamp, date_format, first, last, lit, max, mean, min, substring, sum, sumDistinct, when}
+import org.apache.spark.storage.StorageLevel
 
 class PlayListTheYear(iSpark: ISpark, today: TodayUtils, validParamUtils: ValidParamUtils) {
   private var TABLE_NAME_INGESTION = ""
@@ -99,7 +100,7 @@ class PlayListTheYear(iSpark: ISpark, today: TodayUtils, validParamUtils: ValidP
           col("timestamp"),
           col("dat_partition"),
           col("year_month"),
-          col("dat_ref_format")).persist()
+          col("dat_ref_format")).persist(StorageLevel.MEMORY_ONLY_SER)
 
 
       println(s"saving dfToSave int the $TABLE_NAME_INGESTION ...")
