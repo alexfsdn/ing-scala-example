@@ -98,7 +98,7 @@ class SparkImpl(spark: SparkSession) extends ISpark with Serializable {
    * @return
    */
   override def getFile(pathFileName: String, format: String, map: Map[String, String], schema: StructType): DataFrame = {
-    spark.read.format(format).options(map).option("mode", "PERMISSIVE")
+    spark.read.format(format).options(map).option("mode", "PERMISSIVE")//The PERMISSIVE mode sets to null field values when corrupted records are detected. By default, if you don't specify the parameter mode, Spark sets the PERMISSIVE value.
       .schema(schema).load(pathFileName).cache()
   }
 
