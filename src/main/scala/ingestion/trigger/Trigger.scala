@@ -2,6 +2,7 @@ package ingestion.trigger
 
 import ingestion.base.dados.{ISpark, Ihdfs}
 import ingestion.base.dados.impl.{HdfsImpl, SparkImpl}
+import ingestion.base.enums.StatusEnums
 import ingestion.process.ProcessIngestion
 import ingestion.base.services.SparkSessionServices
 import ingestion.util.TodayUtils
@@ -30,8 +31,10 @@ object Trigger extends Serializable {
 
   def run(iSpark: ISpark, ihdfs: Ihdfs, today: TodayUtils): Int = {
 
-    //val statusList: util.List[Int] = new ProcessIngestion()
+    val statusList: util.List[Int] = new ProcessIngestion(iSpark, ihdfs, today).run()
 
-    return 1
+    val statusFinal = StatusEnums.validStatus(statusList)
+
+    statusFinal
   }
 }
