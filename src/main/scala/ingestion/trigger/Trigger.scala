@@ -18,8 +18,9 @@ object Trigger extends Serializable {
     val spark = new SparkSessionServices().prd
     val iSpark = new SparkImpl(spark)
     val ihdfs = new HdfsImpl()
+    val today = new TodayUtilsImpl()
 
-    val statusFinal = run(iSpark, ihdfs, new TodayUtilsImpl)
+    val statusFinal = run(iSpark, ihdfs, today)
 
     val end = Instant.now()
     val duration = Duration.between(start, end)
