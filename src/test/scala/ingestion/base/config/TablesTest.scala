@@ -8,7 +8,6 @@ class TablesTest {
     println("Tables...")
     println(".........")
     println(".........")
-
     println(Tables.TABLE_INGESTION)
     println(".........")
     println(".........")
