@@ -7,6 +7,7 @@ import ingestion.util.{CaptureParition, TodayUtils}
 import org.apache.spark.sql.DataFrame
 import org.apache.spark.sql.functions.{col, lit}
 import org.apache.spark.sql.types.{StringType, StructType}
+import org.apache.spark.storage.StorageLevel
 import org.json4s._
 import org.json4s.jackson.JsonMethods._
 
@@ -132,7 +133,7 @@ class ProcessIngestion(iSpark: ISpark, ihdfs: Ihdfs, today: TodayUtils) {
       val dfToSave = dfValidLines
         .withColumn(TIMESTAMP_NAME, lit(ingestionTimeStamp))
         .withColumn(PARTITION_NAME, lit(partitionName))
-        .select(COL_ORDER.map(col(_)): _*).persist()
+        .select(COL_ORDER.map(col(_)): _*).persist(StorageLevel.MEMORY_ONLY_SER)
 
       iSpark.save(dfToSave, TABLE_NAME)
       dfToSave.unpersist()
