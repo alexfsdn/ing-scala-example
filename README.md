@@ -1,4 +1,4 @@
-# ing-example
+# ing-scala-example
 
 Esse projeto tem alguns objetivos simples:
 
