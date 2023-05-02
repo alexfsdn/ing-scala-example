@@ -18,28 +18,26 @@ class HiveTest {
 
     hiveContext = spark.sqlContext
 
-    hiveContext.sql("CREATE DATABASE IF NOT EXISTS test")
-    hiveContext.sql("USE test")
+    hiveContext.sql("DROP DATABASE IF EXISTS databasetest")
+    hiveContext.sql("CREATE DATABASE IF NOT EXISTS databasetest")
+    hiveContext.sql("USE databasetest")
   }
 
   @After
   def cleanup(): Unit = {
-    hiveContext.sql("DROP TABLE IF EXISTS test_table")
+    hiveContext.sql("DROP TABLE IF EXISTS table_test")
   }
 
   @Test
   def test(): Unit = {
-    hiveContext.sql("CREATE TABLE IF NOT EXISTS test_table (id INT, name STRING)")
-    hiveContext.sql("INSERT INTO test_table VALUES (1, 'Alex')")
-    hiveContext.sql("INSERT INTO test_table VALUES (2, 'Bruna')")
-    hiveContext.sql("INSERT INTO test_table VALUES (3, 'Soraya')")
-    hiveContext.sql("INSERT INTO test_table VALUES (4, 'Carlos')")
-    hiveContext.sql("INSERT INTO test_table VALUES (5, 'Duda')")
+    hiveContext.sql("CREATE TABLE IF NOT EXISTS table_test (id INT, name STRING, dat_ref STRING)")
+    hiveContext.sql("INSERT INTO table_test VALUES (1, 'Alex', '20230205')")
+    hiveContext.sql("INSERT INTO table_test VALUES (2, 'Bruna', '20230205')")
 
-    val result = hiveContext.sql("SELECT * FROM test_table")
+    val result = hiveContext.sql("SELECT * FROM table_test")
 
-    result.show(5, false)
-    assert(result.count() == 5)
+    result.show(2, false)
+    assert(result.count() == 2)
   }
 
 }
