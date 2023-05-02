@@ -52,7 +52,7 @@ class PlayListTheYearTest {
     when(valid.dataBaseTableValid(userTable)).thenReturn(true)
     when(valid.dataBaseTableValid(playListTable)).thenReturn(true)
     when(valid.dataBaseTableValid(tableNameIngestion)).thenReturn(true)
-    when(valid.dataBaseTableValid(year)).thenReturn(true)
+    when(valid.isEmpty(year)).thenReturn(true)
 
     val iSpark = new SparkImplFake(spark)
 
@@ -62,7 +62,7 @@ class PlayListTheYearTest {
     verify(valid, times(1)).dataBaseTableValid(userTable)
     verify(valid, times(1)).dataBaseTableValid(playListTable)
     verify(valid, times(1)).dataBaseTableValid(tableNameIngestion)
-    verify(valid, times(1)).dataBaseTableValid(year)
+    verify(valid, times(1)).isEmpty(year)
     assert(status == StatusEnums.SUCCESS.id)
   }
 
@@ -76,8 +76,8 @@ class PlayListTheYearTest {
     spark.sql("select * from user").show()
     spark.sql("select * from playlist").show()
 
-    val userTable = "music.user"
-    val playListTable = "music.playList"
+    val userTable = "user"
+    val playListTable = "playList"
     val tableNameIngestion = ""
     val year = null
 
