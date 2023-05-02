@@ -1,7 +1,7 @@
-package ingestion
+package ingestion.hive
 
-import org.junit.{After, Before, Test}
 import org.apache.spark.sql.{SQLContext, SparkSession}
+import org.junit.{After, Before, Test}
 
 class HiveTest {
 

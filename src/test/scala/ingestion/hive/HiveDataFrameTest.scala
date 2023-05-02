@@ -1,4 +1,4 @@
-package ingestion
+package ingestion.hive
 
 import org.apache.spark.SparkConf
 import org.apache.spark.sql.functions.lit
@@ -31,18 +31,16 @@ class HiveDataFrameTest {
     hiveContext.sql("DROP DATABASE IF EXISTS databasetest")
     hiveContext.sql("CREATE DATABASE IF NOT EXISTS databasetest")
     hiveContext.sql("USE databasetest")
+    hiveContext.sql("CREATE TABLE IF NOT EXISTS databasetest.table_test (name STRING, age STRING, cpf STRING, dat_ref STRING, dat_partition STRING)")
   }
 
   @After
   def cleanup(): Unit = {
-    hiveContext.sql("DROP TABLE IF EXISTS table_test")
+    hiveContext.sql("DROP TABLE IF EXISTS databasetest.table_test")
   }
 
   @Test
   def saveDataFrameTest(): Unit = {
-    hiveContext.sql("CREATE TABLE IF NOT EXISTS table_test (name STRING, age STRING, cpf STRING, dat_ref STRING, dat_partition STRING)")
-
-
     val PATH = "src/test/resources/mock_hive_example_20230502.csv"
 
     val dataFrameExample = hiveContext.read.option("header", "true")
@@ -54,9 +52,9 @@ class HiveDataFrameTest {
 
     result.write.format("orc").mode(SaveMode.Overwrite)
       .option("partitionOverwriteMode", "dynamic")
-      .insertInto(s"table_test")
+      .insertInto(s"databasetest.table_test")
 
-    val consult = hiveContext.sql("select * from table_test").persist(StorageLevel.MEMORY_ONLY)
+    val consult = hiveContext.sql("select * from databasetest.table_test").persist(StorageLevel.MEMORY_ONLY)
 
     consult.show(5, false)
 
