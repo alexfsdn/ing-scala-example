@@ -31,6 +31,14 @@ Apesar da ideia desse pequeno projeto é demonstrar como podemos fazer uso apena
 
 Esse readme orienta apenas como testar o ProcessIngestion, porém existe outras classes/processos que envetualmente decidi subir para guardar, esses processos cabe você explorar caso tenha interesse.
 
+ATENTAÇÃO, CASO OS TESTES COM MOCKS NÃO TE SATISFAZEM VOCÊ PODE OPTAR POR *****HIVE EM MEMÓRIA*****.
+PARA ISSO ACESSE O LINK ABAIXO E CONFORME P PATH INDICADO NO PRINT APRESNETA.
+NESSES TESTES COM HIVE CRIAMOS TABELAS EM MEMÓRIA, O SPARK FAZ INSERÇÕES E VOCÊ PODE CONSULTAR OS RESULTADOS POSTERIORMENTE.
+
+https://github.com/alexfsdn/ing-scala-example/tree/main/src/test/scala/ingestion/hive
+
+![image](https://user-images.githubusercontent.com/51302698/235801986-d0c38791-71f1-44b6-8e20-989ed7b469a1.png)
+
 outros processos:
 https://github.com/alexfsdn/ing-example/blob/main/src/main/scala/ingestion/process/PlayListTheYear.scala (teste usando a classe https://github.com/alexfsdn/ing-example/blob/main/src/test/scala/ingestion/process/PlayListTheYearTest.scala) 
 
@@ -42,4 +50,7 @@ Para os testes com os mocks, basta passarmos o path a partir da pasta "src", com
 "um  pedaço do código"
 
 ![image](https://user-images.githubusercontent.com/51302698/219902209-27964dbf-e315-4a71-a2fa-4a7851c5750f.png)
+
+
+
 
