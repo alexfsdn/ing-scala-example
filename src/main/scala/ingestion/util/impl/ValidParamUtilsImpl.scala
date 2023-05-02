@@ -9,4 +9,10 @@ class ValidParamUtilsImpl extends ValidParamUtils {
 
     true
   }
+
+  def isEmpty(value: String): Boolean = {
+    if (value == null || value.trim.isEmpty) return false
+
+    true
+  }
 }

@@ -25,7 +25,7 @@ class PlayListTheYear(iSpark: ISpark, today: TodayUtils, validParamUtils: ValidP
       if (!validParamUtils.dataBaseTableValid(userTable)) throw new IllegalArgumentException("Invalid parameter, check: if the value userTable are null or do not contain a period between the database and the table")
       if (!validParamUtils.dataBaseTableValid(playListTable)) throw new IllegalArgumentException("Invalid parameter, check: if the value playListTable are null or do not contain a period between the database and the table")
       if (!validParamUtils.dataBaseTableValid(tableNameIngestion)) throw new IllegalArgumentException("Invalid parameter, check: if the value tableNameIngestion are null or do not contain a period between the database and the table")
-      if (!validParamUtils.dataBaseTableValid(year)) throw new IllegalArgumentException("Invalid parameter, check: if the value year are null or do not contain a period between the database and the table")
+      if (!validParamUtils.isEmpty(year)) throw new IllegalArgumentException("Invalid parameter, check: if the value year are null or do not contain a period between the database and the table")
       println("The parameters are corrects... ")
 
       TABLE_NAME_INGESTION = tableNameIngestion
