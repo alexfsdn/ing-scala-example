@@ -32,7 +32,7 @@ Apesar da ideia desse pequeno projeto é demonstrar como podemos fazer uso apena
 Esse readme orienta apenas como testar o ProcessIngestion, porém existe outras classes/processos que envetualmente decidi subir para guardar, esses processos cabe você explorar caso tenha interesse.
 
 ATENÇÃO, CASO OS TESTES COM MOCKS NÃO TE SATISFAZEM VOCÊ PODE OPTAR POR *****HIVE EM MEMÓRIA*****.
-PARA ISSO ACESSE O LINK ABAIXO E CONFORME P PATH INDICADO NO PRINT APRESNETA.
+PARA ISSO ACESSE O LINK ABAIXO.
 NESSES TESTES COM HIVE CRIAMOS TABELAS EM MEMÓRIA, O SPARK FAZ INSERÇÕES E VOCÊ PODE CONSULTAR OS RESULTADOS POSTERIORMENTE.
 
 https://github.com/alexfsdn/ing-scala-example/tree/main/src/test/scala/ingestion/hive
