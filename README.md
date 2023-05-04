@@ -8,7 +8,7 @@ Esse projeto tem alguns 2 objetivos simples:
 ![image](https://user-images.githubusercontent.com/51302698/219902183-154301ef-7e6f-4358-af06-b5824d47e247.png)
 
 
-2. Apresentar como podemos criar testes unitários em aplicações spark apenas utilizando a memória, assim, sendo necessário adotar o paradigma orientação a objetos e fazer o uso de injeção de dependência, possibilitando mockar determinados componentes, os quais, acessam recursos externos a nossa aplicação, que, no qual, não é interessante para nossos testes unitários, que tem como objetivo testar o fluxo apenas (você pode encontrar o teste unitário do ProcessIngestion mencionado acima aqui - > https://github.com/alexfsdn/ing-example/blob/main/src/test/scala/ingestion/process/ProcessIngestionTest.scala). 
+2. Apresentar como podemos criar testes unitários em aplicações spark apenas utilizando a memória, sendo necessário adotar o paradigma orientação a objetos e fazer o uso de injeção de dependência, com isso, nos possibilita mockar determinados componentes que acessam recursos externos a nossa aplicação, que, no caso, não é interessante para nossos testes unitários que tem como objetivo testar o fluxo apenas (você pode encontrar o teste unitário do ProcessIngestion mencionado acima aqui - > https://github.com/alexfsdn/ing-example/blob/main/src/test/scala/ingestion/process/ProcessIngestionTest.scala). 
 
 
 ![image](https://user-images.githubusercontent.com/51302698/219902132-54016da0-73cc-4e2d-9230-694e3ce94e72.png)
