@@ -1,6 +1,6 @@
 # ing-scala-example
 
-Esse projeto tem alguns objetivos simples:
+Esse projeto tem alguns 2 objetivos simples:
 
 1. Apresentar uma simples ingestão de dados em uma tabela do hive (você pode encontrar a ingestão implementada aqui - > https://github.com/alexfsdn/ing-example/blob/main/src/main/scala/ingestion/process/ProcessIngestion.scala).
 
@@ -13,9 +13,6 @@ Esse projeto tem alguns objetivos simples:
 
 ![image](https://user-images.githubusercontent.com/51302698/219902132-54016da0-73cc-4e2d-9230-694e3ce94e72.png)
 
-
-3. Apresentar como é possível usar/agregar de conceitos/métodos de engenharia de software na construção de um processo de engenharia de dados.
-
 O que eu usei?
 
 IDE intellij
@@ -27,13 +24,13 @@ JUnit (ao invés do Scala Test)
 Mockito
 Windows 10
 
-Apesar da ideia desse pequeno projeto que é demonstrar como podemos fazer uso apenas da memória para construir nossas aplicação de ingestão com Spark, é claro que você pode gerar um jar e testar em um ambiente que tenha hdfs e Spark, irá funcionar, eu testei!! Para isso deve olhar para o arquivo https://github.com/alexfsdn/ing-example/blob/main/src/main/resources/application.properties e configurar os parâmetros de acordo com o seu ambiente. E o seu start se encontra aqui -> https://github.com/alexfsdn/ing-example/blob/main/src/main/scala/ingestion/trigger/Trigger.scala aqui conseguirá ver nitidamente os recursos reais do hdfs e do spark. Na aplicação tenho implementado o código que lê arquivos no hdfs e temos o código do spark que faz ingestão dos dados, e, outras coisas mais.
+Apesar da ideia desse pequeno projeto que é demonstrar como podemos fazer uso apenas da memória para construir nossas aplicação de ingestão com Spark, é claro que você pode gerar um jar e testar em um ambiente que tenha hdfs e Spark, irá funcionar, eu testei!! Para isso deve olhar para o arquivo https://github.com/alexfsdn/ing-example/blob/main/src/main/resources/application.properties e configurar os parâmetros de acordo com o seu ambiente ou criar outro arquivo e apontar no seu spark-submit para que use o seu ".properties" ou ".conf". E o seu start se encontra aqui -> https://github.com/alexfsdn/ing-example/blob/main/src/main/scala/ingestion/trigger/Trigger.scala aqui conseguirá ver nitidamente os recursos reais do hdfs e do spark. Na aplicação tenho implementado o código que lê arquivos no hdfs e temos o código do spark que faz ingestão dos dados, e, outras coisas mais.
 
-Esse readme orienta apenas como testar o ProcessIngestion, porém existe outras classes/processos que envetualmente decidi subir para guardar, esses processos cabe você explorar caso tenha interesse.
+Esse readme orienta apenas como testar o ProcessIngestion, porém existe outras classes/processos que você pode explorar.
 
 ATENÇÃO, CASO OS TESTES COM MOCKS NÃO TE SATISFAZEM VOCÊ PODE OPTAR POR *****HIVE EM MEMÓRIA*****.
 PARA ISSO ACESSE O LINK ABAIXO.
-NESSES TESTES COM HIVE CRIAMOS TABELAS EM MEMÓRIA, O SPARK FAZ INSERÇÕES E VOCÊ PODE CONSULTAR OS RESULTADOS POSTERIORMENTE.
+NESSES TESTES COM HIVE CRIO TABELAS EM MEMÓRIA, O SPARK FAZ INSERÇÕES E VOCÊ PODE CONSULTAR OS RESULTADOS POSTERIORMENTE.
 
 https://github.com/alexfsdn/ing-scala-example/tree/main/src/test/scala/ingestion/hive
 
