@@ -1,4 +1,4 @@
-package ingestion.base.impl
+package ingestion.base.dados.impl
 
 import ingestion.base.config.Config
 import org.junit.Test
