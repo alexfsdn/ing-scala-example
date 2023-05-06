@@ -21,7 +21,7 @@ class SparkImplFake(spark: SparkSession) extends ISpark {
 
   }
 
-  override def get(columns: Array[String], tableName: DataFrame, partitionName: String, partitions: Array[String]): DataFrame = {
+  override def get(columns: Array[String], tableName: String, partitionName: String, partitions: Array[String]): DataFrame = {
     try {
 
       val sqlCommand =

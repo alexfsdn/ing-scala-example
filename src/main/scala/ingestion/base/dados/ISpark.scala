@@ -7,7 +7,7 @@ trait ISpark {
 
   def save(dataFrame: DataFrame, tableName: String): Unit
 
-  def get(columns: Array[String] = Array("*"), tableName: DataFrame, partitionName: String, partitions: Array[String] = Array("*")): DataFrame
+  def get(columns: Array[String] = Array("*"), tableName: String, partitionName: String, partitions: Array[String] = Array("*")): DataFrame
 
   def get(query: String): DataFrame
 
