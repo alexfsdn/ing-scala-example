@@ -1,6 +1,6 @@
 # ing-scala-example
 
-Esse projeto tem alguns 2 objetivos simples:
+Esse projeto tem 2 objetivos simples:
 
 1. Apresentar uma simples ingestão de dados em uma tabela do hive (você pode encontrar a ingestão implementada aqui - > https://github.com/alexfsdn/ing-example/blob/main/src/main/scala/ingestion/process/ProcessIngestion.scala).
 
