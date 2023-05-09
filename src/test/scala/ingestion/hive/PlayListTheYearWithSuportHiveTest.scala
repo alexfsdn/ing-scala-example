@@ -72,7 +72,6 @@ class PlayListTheYearWithSuportHiveTest {
     when(today.getTodayWithHours()).thenReturn("20220812T162015")
     when(today.getToday()).thenReturn("20220812")
 
-    spark = new SparkSessionServices().devLocal
   }
 
   @After
