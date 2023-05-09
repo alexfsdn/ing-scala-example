@@ -7,11 +7,13 @@ import ingestion.base.enums.StatusEnums
 import ingestion.fake.schema.ExampleBaseInterna
 import ingestion.process.ProcessIngestion
 import ingestion.util.TodayUtils
+import ingestion.util.impl.TodayUtilsImpl
 import org.apache.spark.SparkConf
 import org.apache.spark.sql.types.StringType
 import org.apache.spark.sql.{SQLContext, SparkSession}
 import org.junit.{After, Before, Test}
 import org.mockito.Mockito.{mock, times, verify, when}
+import java.io.File
 
 class ProcessIngestionWithSuportHiveTest {
 
@@ -34,6 +36,19 @@ class ProcessIngestionWithSuportHiveTest {
 
   @Before
   def configMocks(): Unit = {
+    val directory = new File("src/test/resources/archiving")
+    val directoryError = new File("src/test/resources/archiving_error")
+
+    deleteRecursive(directory)
+    deleteRecursive(directoryError)
+
+    def deleteRecursive(file: File): Unit = {
+      if (file.isDirectory) {
+        file.listFiles.foreach(deleteRecursive)
+      }
+      file.delete()
+    }
+
     val conf = new SparkConf().setAppName("App Name example prod")
       .set("hive.exec.dynamic.partition.mode", "nonstrict")
       .set("spark.some.config.option", "some-value")
@@ -62,11 +77,7 @@ class ProcessIngestionWithSuportHiveTest {
 
     println(s"Hive-Schema... ${schema.toString()}")
 
-    today = mock(classOf[TodayUtils])
-
-    when(today.getTodayOnlyNumbers()).thenReturn("20220812")
-    when(today.getTodayWithHours()).thenReturn("20220812T162015")
-    when(today.getToday()).thenReturn("20220812")
+    today = new TodayUtilsImpl
   }
 
   @After

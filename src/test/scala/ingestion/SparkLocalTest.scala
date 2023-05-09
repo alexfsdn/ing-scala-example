@@ -1,11 +1,7 @@
 package ingestion
 
-import ingestion.base.dados.Ihdfs
-import ingestion.base.enums.StatusEnums
 import ingestion.base.services.SparkSessionServices
-import ingestion.fake.SparkImplFake
 import ingestion.model.ExampleDataFrame
-import ingestion.process.ProcessIngestion
 import ingestion.util.impl.TodayUtilsImpl
 import org.apache.spark.sql.functions.lit
 import org.junit.{Before, Test}

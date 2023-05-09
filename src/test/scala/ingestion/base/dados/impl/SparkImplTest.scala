@@ -24,7 +24,7 @@ class SparkImplTest {
 
   @After
   def cleanup(): Unit = {
-    spark.sql(s"DROP TABLE IF EXISTS  $TABLE_NAME ")
+    spark.sql(s"DROP TABLE IF EXISTS $TABLE_NAME ")
   }
 
   @Test
@@ -42,7 +42,7 @@ class SparkImplTest {
     val iSpark = new SparkImpl(spark)
     iSpark.save(dataFrame = df, tableName = TABLE_NAME)
 
-    val getDFSaved = iSpark.get(s"select * from $TABLE_NAME limit 3")
+    val getDFSaved = iSpark.get(s"select * from $TABLE_NAME ")
 
     assert(getDFSaved.count() == 3)
   }
@@ -53,7 +53,7 @@ class SparkImplTest {
     spark.sql(s"INSERT INTO $TABLE_NAME VALUES (1, 'Alex', '20230205')")
     spark.sql(s"INSERT INTO $TABLE_NAME VALUES (2, 'Bruna', '20230205')")
 
-    val getDFSaved = new SparkImpl(spark).get(s"select * from $TABLE_NAME limit 3")
+    val getDFSaved = new SparkImpl(spark).get(s"select * from $TABLE_NAME ")
     val onlyAlexDf = getDFSaved.filter(col("name") === lit("Alex"))
 
     assert(getDFSaved.count() == 2)
@@ -88,6 +88,5 @@ class SparkImplTest {
 
     assert(getDF.count() == 4)
   }
-
 
 }

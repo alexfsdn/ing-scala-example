@@ -31,7 +31,10 @@ class TodayUtilsImpl extends TodayUtils {
    */
   override def getTodayOnlyYearMonth(): String = {
     val year = LocalDate.now().getYear.toString
-    val month = LocalDate.now().getMonthValue.toString
+    var month = LocalDate.now().getMonthValue.toString
+    if (month.size == 1) {
+      month = "0".concat(month)
+    }
     year.concat(month)
   }
 

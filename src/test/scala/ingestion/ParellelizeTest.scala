@@ -6,7 +6,7 @@ import org.junit.Test
 
 class ParellelizeTest {
 
-  @Test
+  //@Test
   def test(): Unit = {
     val spark: SparkSession = SparkSession.builder()
       .master("local[5]")

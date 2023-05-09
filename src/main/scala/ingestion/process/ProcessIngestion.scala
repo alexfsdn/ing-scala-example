@@ -144,12 +144,12 @@ class ProcessIngestion(iSpark: ISpark, ihdfs: Ihdfs, today: TodayUtils) {
 
       if (dfValidLines.count() > 0) {
         println(s"Step 9... exporting valid lines to archiving path $ARCHIVING_PATH")
-        export(dfValidLines, FORMAT, ARCHIVING_PATH.concat(fileName.concat(today.getTodayWithHours())))
+        export(dfValidLines, FORMAT, ARCHIVING_PATH.concat(fileName.replace(".csv", "_").concat(today.getTodayWithHours()).concat(".csv")))
       }
 
       if (dfInvalidLines.count() > 0) {
         println(s"Step 10... exporting invalid lines to archiving path error $ARCHIVING_ERROR_PATH")
-        export(dfInvalidLines, FORMAT, ARCHIVING_ERROR_PATH.concat(fileName.concat(today.getTodayWithHours())))
+        export(dfInvalidLines, FORMAT, ARCHIVING_ERROR_PATH.concat(fileName.replace(".csv", "_").concat(today.getTodayWithHours()).concat(".csv")))
       }
 
     } catch {
