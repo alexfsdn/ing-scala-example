@@ -19,7 +19,7 @@ class HiveTableExternalTest {
 
     spark.udf.register("regex_replace", (input: String, pattern: String, replacement: String) => {
       input.replaceAll(pattern, replacement)
-    })
+    }) //isso só é necessário de decidir usar regex_replace invés de regexp_replace
 
     hiveContext = spark.sqlContext
 
