@@ -27,24 +27,12 @@ class PlayListTheYearWithSuportHiveTest {
 
   @Before
   def configMocks(): Unit = {
-    val conf = new SparkConf().setAppName("App Name example prod")
-      .set("hive.exec.dynamic.partition.mode", "nonstrict")
-      .set("spark.some.config.option", "some-value")
-      .set("spark.sql.catalogImplementation", "hive")
 
-    spark = SparkSession.builder()
-      .appName("test")
-      .master("local[*]")
-      .config(conf)
-      .enableHiveSupport()
-      .getOrCreate()
+    spark = SparkSessionServices.devLocalEnableHiveSupport
 
     hiveContext = spark.sqlContext
 
-    hiveContext.sql(s"DROP TABLE IF EXISTS music.user")
-    hiveContext.sql(s"DROP TABLE IF EXISTS music.playlist")
-    hiveContext.sql(s"DROP TABLE IF EXISTS music.play_list_the_year")
-    hiveContext.sql(s"DROP DATABASE IF EXISTS music")
+    cleanup()
     hiveContext.sql(s"CREATE DATABASE IF NOT EXISTS music")
     hiveContext.sql(s"USE music")
     hiveContext.sql(s"CREATE TABLE IF NOT EXISTS music.playlist (user_id STRING,list_name STRING,style STRING,dat_ref STRING,number_music STRING)")
@@ -76,9 +64,7 @@ class PlayListTheYearWithSuportHiveTest {
 
   @After
   def cleanup(): Unit = {
-    hiveContext.sql(s"DROP TABLE IF EXISTS music.user")
-    hiveContext.sql(s"DROP TABLE IF EXISTS music.playlist")
-    hiveContext.sql("select * from music.play_list_the_year ")
+    hiveContext.sql("DROP DATABASE IF EXISTS music CASCADE")
   }
 
   @Test def Success(): Unit = {
@@ -105,7 +91,7 @@ class PlayListTheYearWithSuportHiveTest {
 
     val iSpark = new SparkImpl(spark)
 
-    val status: Int = new PlayListTheYear(iSpark, today, valid).run(userTable, playListTable, tableNameIngestion, year)
+    val status: Int = new PlayListTheYear(iSpark, today, valid, true).run(userTable, playListTable, tableNameIngestion, year)
 
     val finalTableDF = hiveContext.sql("select * from music.play_list_the_year ")
     assert(status == StatusEnums.SUCCESS.id)

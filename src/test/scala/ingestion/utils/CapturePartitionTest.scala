@@ -9,12 +9,15 @@ class CapturePartitionTest {
     println("CapturePartitionTest test...")
 
     val fileName = "/hadoop/input/example/example_name_arquivo_20220211.csv"
+    val fileName2 = "\\hadoop\\input\\example\\example_name_arquivo_20220211.csv"
     val fileNameYearMonth = "/hadoop/input/example/example_name_arquivo_202202.csv"
 
     val partitionName = CaptureParition.captureParition(fileName)
+    val partitionName2 = CaptureParition.captureParition(fileName2)
     val partitionNameYearhMonth = CaptureParition.captureParition(fileNameYearMonth)
 
     println("partitionName=" + partitionName)
+    println("partitionName2=" + partitionName2)
     println("partitionNameYearhMonth=" + partitionNameYearhMonth)
 
     assert(partitionName == "20220211")
@@ -23,10 +26,10 @@ class CapturePartitionTest {
   }
 
   @Test def onlyNameTest(): Unit = {
-    println("onlyNameTest test...")
+    println("onlyName Test test...")
 
     val pathFile = "/hadoop/input/example/example_name_arquivo_20220211.csv"
-    val pathFile2 = "C:\\Documents\\projetos\\ing-example\\src\\test\\resources\\mock_example_20220812.csv".replace("\\", "/")
+    val pathFile2 = "\\src\\test\\resources\\mock_example_20220812.csv".replace("\\", "/")
     val pathFileYearMonth = "/hadoop/input/example/example_name_arquivo_202202.csv"
 
     val onlyName = CaptureParition.getOnlyNameFile(pathFile)

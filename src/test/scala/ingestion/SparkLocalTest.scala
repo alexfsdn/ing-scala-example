@@ -23,7 +23,7 @@ class SparkLocalTest {
 
 
   @Test def testSparkLocal(): Unit = {
-    val spark = new SparkSessionServices().devLocal
+    val spark = SparkSessionServices.devLocal
 
     val dataFrameExample = spark.read.option("header", "true").option("delimiter", ";").csv(PATH)
 
@@ -33,7 +33,7 @@ class SparkLocalTest {
   }
 
   @Test def test(): Unit = {
-    val spark = new SparkSessionServices().devLocal
+    val spark = SparkSessionServices.devLocal
 
     val exampleDataFrame = new ExampleDataFrame("alex", "30", "11111111", new TodayUtilsImpl().getToday())
 
@@ -48,7 +48,7 @@ class SparkLocalTest {
   @Test def testRemoveErrorLines(): Unit = {
     val PATH = new File(new File("src/test/resources/mock_example_20220813.csv").getAbsolutePath).getAbsolutePath
 
-    val spark = new SparkSessionServices().devLocal
+    val spark = SparkSessionServices.devLocal
 
     val dataFrameExample = spark.read.option("header", "true")
       //removendo linhas erradas

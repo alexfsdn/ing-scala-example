@@ -15,7 +15,7 @@ object Trigger extends Serializable {
 
   def main(args: Array[String]): Unit = {
     val start = Instant.now()
-    val spark = new SparkSessionServices().prd
+    val spark = SparkSessionServices.prd
     val iSpark = new SparkImpl(spark)
     val ihdfs = new HdfsImpl()
     val today = new TodayUtilsImpl()

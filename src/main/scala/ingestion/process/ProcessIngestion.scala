@@ -8,12 +8,13 @@ import org.apache.spark.sql.DataFrame
 import org.apache.spark.sql.functions.{col, lit}
 import org.apache.spark.sql.types.{StringType, StructType}
 import org.apache.spark.storage.StorageLevel
+import org.dmg.pmml.False
 import org.json4s._
 import org.json4s.jackson.JsonMethods._
 
 import java.util
 
-class ProcessIngestion(iSpark: ISpark, ihdfs: Ihdfs, today: TodayUtils) {
+class ProcessIngestion(iSpark: ISpark, ihdfs: Ihdfs, today: TodayUtils, printDataFrame: Boolean = false) {
 
   private var parameters: Map[String, String] = null
   private lazy val FORMAT: String = Config.getFormat
@@ -95,33 +96,54 @@ class ProcessIngestion(iSpark: ISpark, ihdfs: Ihdfs, today: TodayUtils) {
 
       println(s"Step 5... capturing file to validation: $fileName")
 
-      val df: DataFrame = getFile(pathFile, FORMAT, parameters, schema)
+      val df: DataFrame = getFile(pathFile, FORMAT, parameters, schema).persist(StorageLevel.MEMORY_ONLY_SER)
 
       val totalLines = df.count()
 
+      //print para teste apenas
+      if (printDataFrame) {
+        println(" val df: DataFrame = getFile(pathFile, FORMAT, parameters, schema): ")
+        df.show(10, false)
+      }
+
       println(s"Step 6... capturing invalid lines")
 
-      val dfInvalidLines: DataFrame = getInvalidLines(df, INVALID_LINES).persist
+      val dfInvalidLines: DataFrame = getInvalidLines(df, INVALID_LINES).persist(StorageLevel.MEMORY_ONLY_SER)
 
       val totalInvalidesLines = dfInvalidLines.count()
 
       println(s"... total invalid lines $totalInvalidesLines")
+
+      //print para teste apenas
+      if (printDataFrame) {
+        println("val dfInvalidLines: DataFrame = getInvalidLines(df, INVALID_LINES).persist: ")
+        dfInvalidLines.show(10, false)
+      }
+
 
       if (totalLines == totalInvalidesLines) {
         println("There is no data to process")
         throw new NullPointerException(s"There is no data to process $fileName")
       }
 
-      val partitionName = CaptureParition.getOnlyNameFile(pathFile)
-      val ingestionTimeStamp = today.getToday()
+      val partitionName = CaptureParition.captureParition(pathFile)
+      val ingestionTimeStamp = today.getTodayWithHours()
 
       println(s"Step 7... capturing valid lines")
 
-      val dfValidLines: DataFrame = getValidLines(df, INVALID_LINES).persist
+      val dfValidLines: DataFrame = getValidLines(df, INVALID_LINES).persist(StorageLevel.MEMORY_ONLY_SER)
+
+      df.unpersist()
 
       val totalValidesLines = dfValidLines.count()
 
       println(s"... total invalid lines $totalValidesLines")
+
+      //print para teste apenas
+      if (printDataFrame) {
+        println("val dfValidLines: DataFrame = getValidLines(df, INVALID_LINES).persist: ")
+        dfValidLines.show(10, false)
+      }
 
       if (totalValidesLines <= 0) {
         println("There is no data to process")
@@ -136,6 +158,13 @@ class ProcessIngestion(iSpark: ISpark, ihdfs: Ihdfs, today: TodayUtils) {
         .select(COL_ORDER.map(col(_)): _*).persist(StorageLevel.MEMORY_ONLY_SER)
 
       iSpark.save(dfToSave, TABLE_NAME)
+
+      //print para teste apenas
+      if (printDataFrame) {
+        println("val dfToSave = dfValidLines .... : ")
+        dfToSave.show(10, false)
+      }
+
       dfToSave.unpersist()
 
       val newName = fileName.concat(ORIGINAL_LABEL).concat(today.getTodayWithHours())
@@ -151,6 +180,9 @@ class ProcessIngestion(iSpark: ISpark, ihdfs: Ihdfs, today: TodayUtils) {
         println(s"Step 10... exporting invalid lines to archiving path error $ARCHIVING_ERROR_PATH")
         export(dfInvalidLines, FORMAT, ARCHIVING_ERROR_PATH.concat(fileName.replace(".csv", "_").concat(today.getTodayWithHours()).concat(".csv")))
       }
+
+      dfValidLines.unpersist()
+      dfInvalidLines.unpersist()
 
     } catch {
       case _: NullPointerException =>

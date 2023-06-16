@@ -29,7 +29,7 @@ class PlayListTheYearTest {
     when(today.getTodayWithHours()).thenReturn("20220812T162015")
     when(today.getToday()).thenReturn("20220812")
 
-    spark = new SparkSessionServices().devLocal
+    spark = SparkSessionServices.devLocal
   }
 
   @Test def Success(): Unit = {
@@ -38,9 +38,6 @@ class PlayListTheYearTest {
 
     dataFrameExample.createOrReplaceTempView("user")
     dataFrameExample2.createOrReplaceTempView("playlist")
-
-    spark.sql("select * from user").show()
-    spark.sql("select * from playlist").show()
 
     val userTable = "user"
     val playListTable = "playList"
@@ -57,7 +54,7 @@ class PlayListTheYearTest {
     val iSpark = new SparkImplFake(spark)
 
 
-    val status: Int = new PlayListTheYear(iSpark, today, valid).run(userTable, playListTable, tableNameIngestion, year)
+    val status: Int = new PlayListTheYear(iSpark, today, valid, true).run(userTable, playListTable, tableNameIngestion, year)
 
     verify(valid, times(1)).dataBaseTableValid(userTable)
     verify(valid, times(1)).dataBaseTableValid(playListTable)
@@ -72,9 +69,6 @@ class PlayListTheYearTest {
 
     dataFrameExample.createOrReplaceTempView("user")
     dataFrameExample2.createOrReplaceTempView("playlist")
-
-    spark.sql("select * from user").show()
-    spark.sql("select * from playlist").show()
 
     val userTable = "user"
     val playListTable = "playList"

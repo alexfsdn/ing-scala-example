@@ -40,20 +40,11 @@ class ProcessIngestionTest {
     when(today.getTodayWithHours()).thenReturn("20220812T162015")
     when(today.getToday()).thenReturn("20220812")
 
-    spark = new SparkSessionServices().devLocal
+    spark = SparkSessionServices.devLocal
   }
 
   @Test def processSuccess(): Unit = {
-    val dataFrameExample = spark.read.option("header", "true").option("delimiter", ";").csv(PATH)
-    dataFrameExample.show(10, false)
-
-    val dataFrameExample2 = spark.read.option("header", "true").option("delimiter", ";").csv(PATH_2)
-    dataFrameExample2.show(10, false)
-
     iHdfs = mock(classOf[Ihdfs])
-
-    //val pathOne = PATH.replace("\\", "/")
-    //val pathTwo = PATH_2.replace("\\", "/")
 
     when(iHdfs.lsAll(INGESTIOM_PATH)).thenReturn(List(PATH, PATH_2))
     when(iHdfs.exist(PATH)).thenReturn(true)
@@ -68,11 +59,24 @@ class ProcessIngestionTest {
     verify(iHdfs, times(1)).exist(PATH_2)
   }
 
-  @Test def processNoData(): Unit = {
+  @Test def processSuccessWithPrintShowDataFrameTrue(): Unit = {
     iHdfs = mock(classOf[Ihdfs])
 
-    //val pathOne = PATH.replace("\\", "/")
-    //val pathTwo = PATH_2.replace("\\", "/")
+    when(iHdfs.lsAll(INGESTIOM_PATH)).thenReturn(List(PATH, PATH_2))
+    when(iHdfs.exist(PATH)).thenReturn(true)
+    when(iHdfs.exist(PATH_2)).thenReturn(true)
+
+    val statusList = new ProcessIngestion(new SparkImplFake(spark), iHdfs, today, true).run()
+
+    val status = StatusEnums.validStatus(statusList)
+
+    assert(status == StatusEnums.SUCCESS.id)
+    verify(iHdfs, times(1)).exist(PATH)
+    verify(iHdfs, times(1)).exist(PATH_2)
+  }
+
+  @Test def processNoData(): Unit = {
+    iHdfs = mock(classOf[Ihdfs])
 
     when(iHdfs.lsAll(INGESTIOM_PATH)).thenReturn(List())
 

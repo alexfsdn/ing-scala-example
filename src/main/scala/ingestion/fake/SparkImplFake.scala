@@ -15,10 +15,6 @@ class SparkImplFake(spark: SparkSession) extends ISpark {
 
     println("gravando... FAKE")
 
-    dataFrame.createOrReplaceTempView("tabela_fake_temp")
-
-    spark.sql("select * from tabela_fake_temp").show(100, false)
-
   }
 
   override def get(columns: Array[String], tableName: String, partitionName: String, partitions: Array[String]): DataFrame = {
@@ -68,7 +64,7 @@ class SparkImplFake(spark: SparkSession) extends ISpark {
     val fileAux = new File(file.getAbsolutePath)
     val path = fileAux.getAbsolutePath
 
-    val spark = new SparkSessionServices().devLocal
+    val spark = SparkSessionServices.devLocal
 
     val dataFrameExample = spark.read.option("header", "true").option("delimiter", ";").csv(path)
 
