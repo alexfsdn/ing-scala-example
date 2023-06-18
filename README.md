@@ -4,7 +4,6 @@ Esse projeto tem 2 objetivos simples:
 
 1. Apresentar como podemos construir um código/fluxo para a ingestão de dados completo fazendo uso apenas da memória do spark (você pode encontrar a ingestão implementada aqui - > https://github.com/alexfsdn/ing-example/blob/main/src/main/scala/ingestion/process/ProcessIngestion.scala).
 
-
 ![image](https://user-images.githubusercontent.com/51302698/219902183-154301ef-7e6f-4358-af06-b5824d47e247.png)
 
 
@@ -36,7 +35,14 @@ Windows 10
 
 TENDO OS RECURSOS ACIMA, BASTA EXECUTAR GIT CLONE PARA BAIXAR O REPOSITÓRIO NA SUA MÁQUINA E IR NAS CLASSES DE TESTES E EXECUTAR, NÃO PRECISA DE MAIS NADA.
 
-Apesar da ideia desse pequeno projeto é demonstrar como podemos fazer uso apenas da memória para construir nossas aplicação de ingestão com Spark, é claro que você pode gerar um jar e testar em um ambiente que tenha Hdfs, Spark e Hive, irá funcionar, eu testei!! Para isso deve olhar para o arquivo https://github.com/alexfsdn/ing-example/blob/main/src/main/resources/application.properties e configurar os parâmetros de acordo com o seu ambiente ou criar outro arquivo e apontar no seu spark-submit para que use o seu ".properties" ou ".conf". E o seu start se encontra aqui -> https://github.com/alexfsdn/ing-example/blob/main/src/main/scala/ingestion/trigger/Trigger.scala aqui conseguirá ver nitidamente os recursos reais do hdfs e do spark. Na aplicação tenho implementado o código que lê arquivos no hdfs e temos o código do spark que faz ingestão dos dados, e, outras coisas mais.
+*POR QUE CONSTRUIR INGESTÃO DE DADOS DESSA FORMA SERIA BOM SE POSSO NA MINHA EMPRESA TENHO UM AMBIENTE E POSSO ACESSAR O SPARK-SHELL PARA CONSTRUIR MESMOS CÓDIGOS TESTADOS?**
+
+1. DOCUMENTAÇÃO: OS TESTES SERVEM COMO DOCUMENTAÇÃO, ISSO AJUDARÁ O PROGRAMADOR (PRINCIPALMENTE OS JUNIORS) ENTENDER FACILMENTE O COMPORTAMENTO DO CÓDIGO.
+2. DEBUG: O DEBUG É FUNDAMENTAL PARA ENTENDIMENTO COM PRECISÃO EM RELAÇÃO AO COMPORTAMENTO DO PROCESSO DE INGESTÃO, O QUE PODE SER IMPRESCINDÍVEL EM UMA ATUALIZAÇÃO MAIS COMPLICADA. 
+3. FÁCIL MANUTENÇÃO E CONFIABILIDADE NA NÃO GERAÇÃO DE BUG NO MOMENTO DA MANUTENÇÃO: UMA APLICAÇÃO COM O PASSAR DO TEMPO GERALMENTE PRECISA TER ATUALIZAÇÕES E COM TESTES MAPEADOS, APÓS O AJUSTE OS TESTE IRÃO GARANTIR QUE O AJUSTE NÃO GEROU UM BUG.
+4. AMBIENTE INDISPONÍVEL: INDISPONIBILIDADE DE AMBIENTE NÃO IRÁ SER IMPEDIMENTO PARA COMEÇAR O DESENVOLVIMENTO.
+
+  Apesar da ideia desse pequeno projeto é demonstrar como podemos fazer uso apenas da memória para construir nossas aplicação de ingestão com Spark, é claro que você pode gerar um jar e testar em um ambiente que tenha Hdfs, Spark e Hive, irá funcionar, eu testei!! Para isso deve olhar para o arquivo https://github.com/alexfsdn/ing-example/blob/main/src/main/resources/application.properties e configurar os parâmetros de acordo com o seu ambiente ou criar outro arquivo e apontar no seu spark-submit para que use o seu ".properties" ou ".conf". E o seu start se encontra aqui -> https://github.com/alexfsdn/ing-example/blob/main/src/main/scala/ingestion/trigger/Trigger.scala aqui conseguirá ver nitidamente os recursos reais do hdfs e do spark. Na aplicação tenho implementado o código que lê arquivos no hdfs e temos o código do spark que faz ingestão dos dados, e, outras coisas mais.
 
 Esse readme orienta apenas como testar o ProcessIngestion, porém existe outras classes/processos que você pode explorar.
 
