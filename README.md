@@ -23,6 +23,8 @@ https://github.com/alexfsdn/ing-scala-example/tree/main/src/test/scala/ingestion
 
 OBS: NÃO SE PREOCUPE COM A MEMÓRIA QUE É USADA, POIS APÓS CADA TESTE É EXECUTADO O METODO CLEANUP SINALIZADO NOS TESTES "@After", assim garantido que não enche nossa memória.
 
+*O que eu utilizei?*
+
 IDE Intellij
 Java 1.8
 Scala-sdk-2.11.12
