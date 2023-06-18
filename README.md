@@ -7,7 +7,7 @@ Esse projeto tem 2 objetivos simples:
 ![image](https://user-images.githubusercontent.com/51302698/219902183-154301ef-7e6f-4358-af06-b5824d47e247.png)
 
 
-2. Apresentar como podemos criar testes unitários em aplicações spark, garantindo uma boa testabilidade.
+2. Apresentar como podemos criar testes unitários em aplicações spark garantindo uma boa testabilidade.
 
    Para conseguir a testabilida do fluxo da ingestão de dados optei em utilizar o paradigma orientação a objetos, assim posso fazer o uso de injeção de dependência, isso nos possibilita mockar determinados componentes que acessam recursos externos a nossa aplicação, que, no caso, não é interessante para nossos testes unitários que tem como objetivo testar o fluxo apenas (você pode encontrar o teste unitário do ProcessIngestion mencionado acima aqui - > https://github.com/alexfsdn/ing-example/blob/main/src/test/scala/ingestion/process/ProcessIngestionTest.scala).
 
