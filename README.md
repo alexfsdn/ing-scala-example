@@ -10,13 +10,13 @@ Esse projeto tem 2 objetivos simples:
 
 2. Apresentar como podemos criar testes unitários em aplicações spark, garantindo uma boa testabilidade.
 
-   Para conseguir a testabilida do fluxo da ingestão de dados optei em utilizar o paradigma orientação a objetos, assim posso fazer o uso de injeção de dependência, nos possibilitando mockar determinados componentes que acessam recursos externos a nossa aplicação, que, no caso, não é interessante para nossos testes unitários que tem como objetivo testar o fluxo apenas (você pode encontrar o teste unitário do ProcessIngestion mencionado acima aqui - > https://github.com/alexfsdn/ing-example/blob/main/src/test/scala/ingestion/process/ProcessIngestionTest.scala).
+   Para conseguir a testabilida do fluxo da ingestão de dados optei em utilizar o paradigma orientação a objetos, assim posso fazer o uso de injeção de dependência, isso nos possibilita mockar determinados componentes que acessam recursos externos a nossa aplicação, que, no caso, não é interessante para nossos testes unitários que tem como objetivo testar o fluxo apenas (você pode encontrar o teste unitário do ProcessIngestion mencionado acima aqui - > https://github.com/alexfsdn/ing-example/blob/main/src/test/scala/ingestion/process/ProcessIngestionTest.scala).
 
 ![image](https://user-images.githubusercontent.com/51302698/219902132-54016da0-73cc-4e2d-9230-694e3ce94e72.png)
 
 **ATENÇÃO**
 *****HIVE EM MEMÓRIA*****.
-NESSE PRÓXIMO TESTE QUE SERÁ APRESENTADO ABAIXO, O QUAL, TESTA A MESMA CLASSE/O MESMO MÉTODO DO TESTE APRESENTANDO ACIMA, FAZ O USO DO HIVE EM MEMÓRIA, OU SEJA, É CRIADO BANCO DE DADOS E TABELAS EM MEMÓRIA, E COM O SPARK CONSEGUIMOS FAZER INSERÇÕES NESSAS TABELAS CRIADAS E CONSULTAR DADOS INSERIROS POR NÓS.
+NESSE PRÓXIMO TESTE QUE SERÁ APRESENTADO ABAIXO, O QUAL, TESTA A MESMA CLASSE/O MESMO MÉTODO DO TESTE APRESENTANDO ACIMA, FAZ O USO DO HIVE EM MEMÓRIA, OU SEJA, É CRIADO BANCO DE DADOS E TABELAS EM MEMÓRIA, E COM O SPARK CONSEGUIMOS FAZER INSERÇÕES NESSAS TABELAS CRIADAS E CONSULTAR DADOS INSERIDOS POR NÓS.
 
 https://github.com/alexfsdn/ing-scala-example/tree/main/src/test/scala/ingestion/hive
 
