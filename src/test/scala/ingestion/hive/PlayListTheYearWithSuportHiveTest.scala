@@ -21,7 +21,6 @@ class PlayListTheYearWithSuportHiveTest {
 
   private var today: TodayUtils = null
   private var spark: SparkSession = null
-  private var valid: ValidParamUtils = null
 
   private var hiveContext: SQLContext = null;
 

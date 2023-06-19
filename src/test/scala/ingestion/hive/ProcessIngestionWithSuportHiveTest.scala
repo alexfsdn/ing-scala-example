@@ -51,11 +51,6 @@ class ProcessIngestionWithSuportHiveTest {
       file.delete()
     }
 
-    val conf = new SparkConf().setAppName("App Name example prod")
-      .set("hive.exec.dynamic.partition.mode", "nonstrict")
-      .set("spark.some.config.option", "some-value")
-      .set("spark.sql.catalogImplementation", "hive")
-
     spark = SparkSessionServices.devLocalEnableHiveSupport
 
     hiveContext = spark.sqlContext
@@ -83,9 +78,6 @@ class ProcessIngestionWithSuportHiveTest {
 
   @Test def processSuccess(): Unit = {
     iHdfs = mock(classOf[Ihdfs])
-
-    //val pathOne = PATH.replace("\\", "/")
-    //val pathTwo = PATH_2.replace("\\", "/")
 
     when(iHdfs.lsAll(INGESTIOM_PATH)).thenReturn(List(PATH, PATH_2))
     when(iHdfs.exist(PATH)).thenReturn(true)
