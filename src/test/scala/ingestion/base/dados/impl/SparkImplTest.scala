@@ -24,7 +24,7 @@ class SparkImplTest {
 
   @After
   def cleanup(): Unit = {
-    spark.sql(s"DROP TABLE IF EXISTS $TABLE_NAME ")
+    spark.sql(s"DROP DATABASE IF EXISTS databasesparkimpl CASCADE")
   }
 
   @Test

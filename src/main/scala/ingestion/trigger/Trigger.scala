@@ -18,9 +18,8 @@ object Trigger extends Serializable {
     val spark = SparkSessionServices.prd
     val iSpark = new SparkImpl(spark)
     val ihdfs = new HdfsImpl()
-    val today = new TodayUtilsImpl()
 
-    val statusFinal = run(iSpark, ihdfs, today)
+    val statusFinal = run(iSpark, ihdfs)
 
     val end = Instant.now()
     val duration = Duration.between(start, end)
@@ -30,9 +29,9 @@ object Trigger extends Serializable {
     System.exit(statusFinal)
   }
 
-  def run(iSpark: ISpark, ihdfs: Ihdfs, today: TodayUtils): Int = {
+  def run(iSpark: ISpark, ihdfs: Ihdfs): Int = {
 
-    val statusList: util.List[Int] = new ProcessIngestion(iSpark, ihdfs, today).run()
+    val statusList: util.List[Int] = new ProcessIngestion(iSpark, ihdfs).run()
 
     val statusFinal = StatusEnums.validStatus(statusList)
 

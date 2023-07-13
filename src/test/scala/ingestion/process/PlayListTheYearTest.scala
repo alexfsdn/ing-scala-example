@@ -4,7 +4,7 @@ import ingestion.base.enums.StatusEnums
 import ingestion.base.services.SparkSessionServices
 import ingestion.fake.SparkImplFake
 import ingestion.util.impl.ValidParamUtilsImpl
-import ingestion.util.{TodayUtils, ValidParamUtils}
+import ingestion.util.{ValidParamUtils}
 import org.apache.spark.sql.SparkSession
 import org.junit.{Before, Test}
 import org.mockito.Mockito.{mock, times, verify, when}
@@ -14,7 +14,6 @@ class PlayListTheYearTest {
   private var PATH: String = null
   private var PATH_2: String = null
 
-  private var today: TodayUtils = null
   private var spark: SparkSession = null
   private var valid: ValidParamUtils = null
 
@@ -22,12 +21,6 @@ class PlayListTheYearTest {
   def configMocks(): Unit = {
     PATH = "src/test/resources/mock_example_20220812.csv"
     PATH_2 = "src/test/resources/mock_example_playlist_music_20220812.csv"
-
-    today = mock(classOf[TodayUtils])
-
-    when(today.getTodayOnlyNumbers()).thenReturn("20220812")
-    when(today.getTodayWithHours()).thenReturn("20220812T162015")
-    when(today.getToday()).thenReturn("20220812")
 
     spark = SparkSessionServices.devLocal
   }
@@ -43,6 +36,7 @@ class PlayListTheYearTest {
     val playListTable = "playList"
     val tableNameIngestion = ""
     val year = "2022"
+    val labelPartition = "dat_partition"
 
     val valid = mock(classOf[ValidParamUtils])
 
@@ -50,11 +44,12 @@ class PlayListTheYearTest {
     when(valid.dataBaseTableValid(playListTable)).thenReturn(true)
     when(valid.dataBaseTableValid(tableNameIngestion)).thenReturn(true)
     when(valid.isEmpty(year)).thenReturn(true)
+    when(valid.isEmpty(labelPartition)).thenReturn(true)
 
     val iSpark = new SparkImplFake(spark)
 
 
-    val status: Int = new PlayListTheYear(iSpark, today, valid, true).run(userTable, playListTable, tableNameIngestion, year)
+    val status: Int = new PlayListTheYear(iSpark, valid, true).run(userTable, playListTable, tableNameIngestion, year, labelPartition)
 
     verify(valid, times(1)).dataBaseTableValid(userTable)
     verify(valid, times(1)).dataBaseTableValid(playListTable)
@@ -74,12 +69,13 @@ class PlayListTheYearTest {
     val playListTable = "playList"
     val tableNameIngestion = ""
     val year = null
+    val labelPartition = "dat_partition"
 
     valid = new ValidParamUtilsImpl
 
     val iSpark = new SparkImplFake(spark)
 
-    val status: Int = new PlayListTheYear(iSpark, today, valid).run(userTable, playListTable, tableNameIngestion, year)
+    val status: Int = new PlayListTheYear(iSpark,  valid).run(userTable, playListTable, tableNameIngestion, year, labelPartition)
 
     assert(status == StatusEnums.FAILURE.id)
   }

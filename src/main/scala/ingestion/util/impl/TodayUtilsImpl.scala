@@ -5,7 +5,7 @@ import ingestion.util.TodayUtils
 import java.time.format.DateTimeFormatter
 import java.time.{LocalDate, LocalDateTime}
 
-class TodayUtilsImpl extends TodayUtils {
+object TodayUtilsImpl extends TodayUtils {
   /** *
    * YYYY-mm-DD
    *

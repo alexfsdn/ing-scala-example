@@ -11,7 +11,7 @@ import org.apache.spark.sql.{DataFrame, SparkSession}
 import java.io.File
 
 class SparkImplFake(spark: SparkSession) extends ISpark {
-  override def save(dataFrame: DataFrame, tableName: String): Unit = {
+  override def save(columns: Array[String], tableName: String, tableNameTmp: String, partitionName: String, partition: String): Unit = {
 
     println("gravando... FAKE")
 
@@ -68,7 +68,7 @@ class SparkImplFake(spark: SparkSession) extends ISpark {
 
     val dataFrameExample = spark.read.option("header", "true").option("delimiter", ";").csv(path)
 
-    dataFrameExample.withColumn("data", lit(new TodayUtilsImpl().getTodayOnlyNumbers()))
+    dataFrameExample.withColumn("data", lit(TodayUtilsImpl.getTodayOnlyNumbers()))
 
 
   }
@@ -79,5 +79,9 @@ class SparkImplFake(spark: SparkSession) extends ISpark {
 
   override def get(query: String): DataFrame = {
     spark.sql(query)
+  }
+
+  override def save(dataFrame: DataFrame, tableName: String): Unit = {
+
   }
 }

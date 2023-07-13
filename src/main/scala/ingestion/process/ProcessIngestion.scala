@@ -3,9 +3,10 @@ package ingestion.process
 import ingestion.base.config.{Config, Tables}
 import ingestion.base.dados.{ISpark, Ihdfs}
 import ingestion.base.enums.StatusEnums
+import ingestion.util.impl.TodayUtilsImpl
 import ingestion.util.{CaptureParition, TodayUtils}
 import org.apache.spark.sql.DataFrame
-import org.apache.spark.sql.functions.{col, lit}
+import org.apache.spark.sql.functions.{col, current_timestamp, lit}
 import org.apache.spark.sql.types.{StringType, StructType}
 import org.apache.spark.storage.StorageLevel
 import org.dmg.pmml.False
@@ -14,7 +15,7 @@ import org.json4s.jackson.JsonMethods._
 
 import java.util
 
-class ProcessIngestion(iSpark: ISpark, ihdfs: Ihdfs, today: TodayUtils, printDataFrame: Boolean = false) {
+class ProcessIngestion(iSpark: ISpark, ihdfs: Ihdfs, printDataFrame: Boolean = false) {
 
   private var parameters: Map[String, String] = null
   private lazy val FORMAT: String = Config.getFormat
@@ -126,8 +127,8 @@ class ProcessIngestion(iSpark: ISpark, ihdfs: Ihdfs, today: TodayUtils, printDat
         throw new NullPointerException(s"There is no data to process $fileName")
       }
 
-      val partitionName = CaptureParition.captureParition(pathFile)
-      val ingestionTimeStamp = today.getTodayWithHours()
+      val partition = CaptureParition.captureParition(pathFile)
+      val ingestionTimeStamp = TodayUtilsImpl.getTodayWithHours()
 
       println(s"Step 7... capturing valid lines")
 
@@ -152,33 +153,26 @@ class ProcessIngestion(iSpark: ISpark, ihdfs: Ihdfs, today: TodayUtils, printDat
 
       println(s"Step 8... ingestion data in the $TABLE_NAME")
 
-      val dfToSave = dfValidLines
-        .withColumn(TIMESTAMP_NAME, lit(ingestionTimeStamp))
-        .withColumn(PARTITION_NAME, lit(partitionName))
-        .select(COL_ORDER.map(col(_)): _*).persist(StorageLevel.MEMORY_ONLY_SER)
+      val tableNameTmp = "tableTMP".concat(ingestionTimeStamp);
 
-      iSpark.save(dfToSave, TABLE_NAME)
+      dfValidLines
+        .withColumn(TIMESTAMP_NAME, lit(current_timestamp()))
+        .select(COL_ORDER.map(col(_)): _*).createOrReplaceTempView(tableNameTmp)
 
-      //print para teste apenas
-      if (printDataFrame) {
-        println("val dfToSave = dfValidLines .... : ")
-        dfToSave.show(10, false)
-      }
+      iSpark.save(COL_ORDER.toArray, TABLE_NAME, tableNameTmp, PARTITION_NAME, partition)
 
-      dfToSave.unpersist()
-
-      val newName = fileName.concat(ORIGINAL_LABEL).concat(today.getTodayWithHours())
+      val newName = fileName.concat(ORIGINAL_LABEL).concat(TodayUtilsImpl.getTodayWithHours())
 
       movingAchiving(pathFile, newName)
 
       if (dfValidLines.count() > 0) {
         println(s"Step 9... exporting valid lines to archiving path $ARCHIVING_PATH")
-        export(dfValidLines, FORMAT, ARCHIVING_PATH.concat(fileName.replace(".csv", "_").concat(today.getTodayWithHours()).concat(".csv")))
+        export(dfValidLines, FORMAT, ARCHIVING_PATH.concat(fileName.replace(".csv", "_").concat(TodayUtilsImpl.getTodayWithHours()).concat(".csv")))
       }
 
       if (dfInvalidLines.count() > 0) {
         println(s"Step 10... exporting invalid lines to archiving path error $ARCHIVING_ERROR_PATH")
-        export(dfInvalidLines, FORMAT, ARCHIVING_ERROR_PATH.concat(fileName.replace(".csv", "_").concat(today.getTodayWithHours()).concat(".csv")))
+        export(dfInvalidLines, FORMAT, ARCHIVING_ERROR_PATH.concat(fileName.replace(".csv", "_").concat(TodayUtilsImpl.getTodayWithHours()).concat(".csv")))
       }
 
       dfValidLines.unpersist()
@@ -190,6 +184,7 @@ class ProcessIngestion(iSpark: ISpark, ihdfs: Ihdfs, today: TodayUtils, printDat
       case _: Exception =>
         return StatusEnums.FAILURE.id
     }
+
 
     StatusEnums.SUCCESS.id
   }

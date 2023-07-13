@@ -8,6 +8,30 @@ class SparkImpl(spark: SparkSession) extends ISpark with Serializable {
 
   /** *
    *
+   */
+  override def save(columns: Array[String], tableName: String, tableNameTmp: String, partitionName: String, partition: String): Unit = {
+
+    try {
+
+      val sqlCommand =
+        s"""|INSERT OVERWRITE TABLE ${tableName} PARTITION (${partitionName}=${partition})
+            |SELECT ${columns.mkString(",")}
+            |FROM ${tableNameTmp}
+            |""".stripMargin
+
+      spark.sql(sqlCommand)
+
+    } catch {
+      case ex: Exception =>
+        println("Filed trying to write record")
+        println(ex.getMessage)
+        throw ex
+    }
+
+  }
+
+  /** *
+   *
    * @param dataFrame
    * @param tableName
    */

@@ -35,7 +35,7 @@ class SparkLocalTest {
   @Test def test(): Unit = {
     val spark = SparkSessionServices.devLocal
 
-    val exampleDataFrame = new ExampleDataFrame("alex", "30", "11111111", new TodayUtilsImpl().getToday())
+    val exampleDataFrame = new ExampleDataFrame("alex", "30", "11111111", TodayUtilsImpl.getToday())
 
     import spark.implicits._
 

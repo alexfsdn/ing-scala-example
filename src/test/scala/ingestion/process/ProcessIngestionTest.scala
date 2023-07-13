@@ -1,12 +1,11 @@
 package ingestion.process
 
 import ingestion.base.config.Config
-import ingestion.base.dados.{ISpark, Ihdfs}
+import ingestion.base.dados.{Ihdfs}
 import ingestion.base.enums.StatusEnums
 import ingestion.base.services.SparkSessionServices
 import ingestion.fake.SparkImplFake
 import ingestion.fake.schema.ExampleBaseInterna
-import ingestion.util.TodayUtils
 import org.apache.spark.sql.SparkSession
 import org.apache.spark.sql.types.StringType
 import org.junit.{Before, Test}
@@ -18,7 +17,6 @@ class ProcessIngestionTest {
   private var PATH_2: String = null
   private val INGESTIOM_PATH = Config.getInputPath
 
-  private var today: TodayUtils = null
   private var iHdfs: Ihdfs = null
   private var spark: SparkSession = null
 
@@ -34,12 +32,6 @@ class ProcessIngestionTest {
 
     println(s"Hive-Schema... ${schema.toString()}")
 
-    today = mock(classOf[TodayUtils])
-
-    when(today.getTodayOnlyNumbers()).thenReturn("20220812")
-    when(today.getTodayWithHours()).thenReturn("20220812T162015")
-    when(today.getToday()).thenReturn("20220812")
-
     spark = SparkSessionServices.devLocal
   }
 
@@ -50,7 +42,7 @@ class ProcessIngestionTest {
     when(iHdfs.exist(PATH)).thenReturn(true)
     when(iHdfs.exist(PATH_2)).thenReturn(true)
 
-    val statusList = new ProcessIngestion(new SparkImplFake(spark), iHdfs, today).run()
+    val statusList = new ProcessIngestion(new SparkImplFake(spark), iHdfs).run()
 
     val status = StatusEnums.validStatus(statusList)
 
@@ -66,7 +58,7 @@ class ProcessIngestionTest {
     when(iHdfs.exist(PATH)).thenReturn(true)
     when(iHdfs.exist(PATH_2)).thenReturn(true)
 
-    val statusList = new ProcessIngestion(new SparkImplFake(spark), iHdfs, today, true).run()
+    val statusList = new ProcessIngestion(new SparkImplFake(spark), iHdfs,  true).run()
 
     val status = StatusEnums.validStatus(statusList)
 
@@ -80,7 +72,7 @@ class ProcessIngestionTest {
 
     when(iHdfs.lsAll(INGESTIOM_PATH)).thenReturn(List())
 
-    val statusList = new ProcessIngestion(new SparkImplFake(spark), iHdfs, today).run()
+    val statusList = new ProcessIngestion(new SparkImplFake(spark), iHdfs).run()
 
     val status = StatusEnums.validStatus(statusList)
 

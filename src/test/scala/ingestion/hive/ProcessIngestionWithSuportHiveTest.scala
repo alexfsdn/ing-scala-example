@@ -8,8 +8,6 @@ import ingestion.base.services.SparkSessionServices
 import ingestion.fake.schema.ExampleBaseInterna
 import ingestion.process.ProcessIngestion
 import ingestion.util.TodayUtils
-import ingestion.util.impl.TodayUtilsImpl
-import org.apache.spark.SparkConf
 import org.apache.spark.sql.types.StringType
 import org.apache.spark.sql.{SQLContext, SparkSession}
 import org.junit.{After, Before, Test}
@@ -23,7 +21,6 @@ class ProcessIngestionWithSuportHiveTest {
   private var PATH_2: String = null
   private val INGESTIOM_PATH = Config.getInputPath
 
-  private var today: TodayUtils = null
   private var iHdfs: Ihdfs = null
   private var spark: SparkSession = null
 
@@ -58,7 +55,12 @@ class ProcessIngestionWithSuportHiveTest {
     cleanup()
     hiveContext.sql(s"CREATE DATABASE IF NOT EXISTS $DATABASE")
     hiveContext.sql(s"USE $DATABASE")
-    hiveContext.sql(s"CREATE TABLE IF NOT EXISTS $DATABASE.$TABLE (name STRING, age STRING, cpf STRING, dat_ref STRING, $INTESTION_NAME STRING, $PARTITION_NAME STRING)")
+    hiveContext.sql(s"CREATE TABLE IF NOT EXISTS $DATABASE.$TABLE (name STRING, " +
+      s"age STRING, " +
+      s"cpf STRING, " +
+      s"dat_ref STRING, " +
+      s"$INTESTION_NAME STRING) " +
+      s"PARTITIONED BY ( $PARTITION_NAME STRING)")
 
     PATH = "src/test/resources/mock_example_20220812.csv"
     PATH_2 = "src/test/resources/mock_example_20220813.csv"
@@ -68,7 +70,6 @@ class ProcessIngestionWithSuportHiveTest {
 
     println(s"Hive-Schema... ${schema.toString()}")
 
-    today = new TodayUtilsImpl
   }
 
   @After
@@ -79,17 +80,19 @@ class ProcessIngestionWithSuportHiveTest {
   @Test def processSuccess(): Unit = {
     iHdfs = mock(classOf[Ihdfs])
 
-    when(iHdfs.lsAll(INGESTIOM_PATH)).thenReturn(List(PATH, PATH_2))
+    when(iHdfs.lsAll(INGESTIOM_PATH)).thenReturn(List(PATH, PATH_2, PATH))
     when(iHdfs.exist(PATH)).thenReturn(true)
     when(iHdfs.exist(PATH_2)).thenReturn(true)
 
     val sparkImpl = new SparkImpl(spark)
-    val statusList = new ProcessIngestion(sparkImpl, iHdfs, today, true).run()
+    val statusList = new ProcessIngestion(sparkImpl, iHdfs, true).run()
 
     val status = StatusEnums.validStatus(statusList)
 
+    hiveContext.sql(s"select * from  $DATABASE.$TABLE").show(20, false)
+
     assert(status == StatusEnums.SUCCESS.id)
-    verify(iHdfs, times(1)).exist(PATH)
+    verify(iHdfs, times(2)).exist(PATH)
     verify(iHdfs, times(1)).exist(PATH_2)
   }
 }

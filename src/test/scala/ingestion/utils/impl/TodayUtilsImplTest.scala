@@ -8,7 +8,7 @@ class TodayUtilsImplTest {
   @Test def test(): Unit = {
     println("today test...")
 
-    val todayImpl = new TodayUtilsImpl()
+    val todayImpl = TodayUtilsImpl
 
     val today = todayImpl.getToday()
     val todayOnlyNumbers = todayImpl.getTodayOnlyNumbers()
