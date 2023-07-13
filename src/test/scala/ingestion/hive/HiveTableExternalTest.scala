@@ -23,6 +23,7 @@ class HiveTableExternalTest {
 
     hiveContext = spark.sqlContext
 
+    cleanup()
     hiveContext.sql("CREATE DATABASE IF NOT EXISTS test_db")
     hiveContext.sql("USE test_db")
     hiveContext.sql("CREATE EXTERNAL TABLE test_db.processo " +
@@ -55,8 +56,7 @@ class HiveTableExternalTest {
 
   @After
   def cleanup(): Unit = {
-    hiveContext.sql("DROP TABLE IF EXISTS test_db.processo")
-    hiveContext.sql("DROP TABLE IF EXISTS test_db.processo_v2")
+    hiveContext.sql(s"DROP DATABASE IF EXISTS test_db CASCADE")
   }
 
 
@@ -157,8 +157,8 @@ class HiveTableExternalTest {
     hiveContext.sql("ALTER TABLE test_db.processo DROP IF EXISTS PARTITION (dat_ref='20230601')")
     hiveContext.sql("ALTER TABLE test_db.processo DROP IF EXISTS PARTITION (dat_ref='20230602')")
 
-    hiveContext.sql("ALTER TABLE test_db.processo_2 DROP IF EXISTS PARTITION (dat_ref='20230601')")
-    hiveContext.sql("ALTER TABLE test_db.processo_2 DROP IF EXISTS PARTITION (dat_ref='20230602')")
+    hiveContext.sql("ALTER TABLE test_db.processo_v2 DROP IF EXISTS PARTITION (dat_ref='20230601')")
+    hiveContext.sql("ALTER TABLE test_db.processo_v2 DROP IF EXISTS PARTITION (dat_ref='20230602')")
   }
 
   @Test

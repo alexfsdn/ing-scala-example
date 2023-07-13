@@ -10,7 +10,6 @@ libraryDependencies += "org.apache.spark" %% "spark-hive" % "2.4.7" % Provided
 libraryDependencies += "org.apache.spark" %% "spark-mllib" % "2.2.0" % Provided
 libraryDependencies += "com.typesafe" % "config" % "1.3.3" % Provided
 
-libraryDependencies += "org.apache.spark" %% "spark-sql" % "2.4.7" % Test
 libraryDependencies += "org.apache.spark" %% "spark-core" % "2.4.7" % Test
 libraryDependencies += "org.apache.spark" %% "spark-sql" % "2.4.7" % Test
 libraryDependencies += "org.apache.spark" %% "spark-hive" % "2.4.7" % Test

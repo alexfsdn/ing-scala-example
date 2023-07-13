@@ -18,14 +18,14 @@ class HiveTest {
 
     hiveContext = spark.sqlContext
 
-    hiveContext.sql("DROP DATABASE IF EXISTS databasetest")
+    cleanup()
     hiveContext.sql("CREATE DATABASE IF NOT EXISTS databasetest")
     hiveContext.sql("USE databasetest")
   }
 
   @After
   def cleanup(): Unit = {
-    hiveContext.sql("DROP TABLE IF EXISTS table_test")
+    hiveContext.sql(s"DROP DATABASE IF EXISTS databasetest CASCADE")
   }
 
   @Test

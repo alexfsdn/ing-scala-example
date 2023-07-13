@@ -46,6 +46,7 @@ class SparkLocalTest {
   }
 
   @Test def testRemoveErrorLines(): Unit = {
+    //System.setProperty("hadoop.home.dir","C:\\hadoop" );
     val PATH = new File(new File("src/test/resources/mock_example_20220813.csv").getAbsolutePath).getAbsolutePath
 
     val spark = SparkSessionServices.devLocal

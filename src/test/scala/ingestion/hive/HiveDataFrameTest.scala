@@ -36,7 +36,8 @@ class HiveDataFrameTest {
 
   @After
   def cleanup(): Unit = {
-    hiveContext.sql("DROP TABLE IF EXISTS databasetest.table_test")
+    hiveContext.sql(s"DROP DATABASE IF EXISTS databasetest CASCADE")
+
   }
 
   @Test
