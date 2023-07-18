@@ -85,7 +85,7 @@ class ProcessIngestionWithSuportHiveTest {
     when(iHdfs.exist(PATH_2)).thenReturn(true)
 
     val sparkImpl = new SparkImpl(spark)
-    val statusList = new ProcessIngestion(sparkImpl, iHdfs, true).run()
+    val statusList = new ProcessIngestion(sparkImpl, iHdfs).run()
 
     val status = StatusEnums.validStatus(statusList)
 

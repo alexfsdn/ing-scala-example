@@ -83,7 +83,7 @@ class PlayListTheYearWithSuportHiveTest {
 
     val iSpark = new SparkImpl(spark)
 
-    val status: Int = new PlayListTheYear(iSpark, valid, true).run(userTable, playListTable, tableNameIngestion, year, labelPartition)
+    val status: Int = new PlayListTheYear(iSpark, valid).run(userTable, playListTable, tableNameIngestion, year, labelPartition)
 
     val finalTableDF = hiveContext.sql("select * from music.play_list_the_year ")
     assert(status == StatusEnums.SUCCESS.id)
@@ -92,7 +92,7 @@ class PlayListTheYearWithSuportHiveTest {
     println("select * from music.play_list_the_year ")
     finalTableDF.show(20, false)
 
-    new PlayListTheYear(iSpark, valid, true).run(userTable, playListTable, tableNameIngestion, "2023", labelPartition)
+    new PlayListTheYear(iSpark, valid).run(userTable, playListTable, tableNameIngestion, "2023", labelPartition)
 
     println("show partitions music.play_list_the_year ")
     hiveContext.sql("show partitions music.play_list_the_year ").show(10, false)

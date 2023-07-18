@@ -49,7 +49,7 @@ class PlayListTheYearTest {
     val iSpark = new SparkImplFake(spark)
 
 
-    val status: Int = new PlayListTheYear(iSpark, valid, true).run(userTable, playListTable, tableNameIngestion, year, labelPartition)
+    val status: Int = new PlayListTheYear(iSpark, valid).run(userTable, playListTable, tableNameIngestion, year, labelPartition)
 
     verify(valid, times(1)).dataBaseTableValid(userTable)
     verify(valid, times(1)).dataBaseTableValid(playListTable)

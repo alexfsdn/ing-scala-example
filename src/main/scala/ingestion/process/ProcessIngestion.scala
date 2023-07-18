@@ -15,7 +15,7 @@ import org.json4s.jackson.JsonMethods._
 
 import java.util
 
-class ProcessIngestion(iSpark: ISpark, ihdfs: Ihdfs, printDataFrame: Boolean = false) {
+class ProcessIngestion(iSpark: ISpark, ihdfs: Ihdfs) {
 
   private var parameters: Map[String, String] = null
   private lazy val FORMAT: String = Config.getFormat
@@ -101,12 +101,6 @@ class ProcessIngestion(iSpark: ISpark, ihdfs: Ihdfs, printDataFrame: Boolean = f
 
       val totalLines = df.count()
 
-      //print para teste apenas
-      if (printDataFrame) {
-        println(" val df: DataFrame = getFile(pathFile, FORMAT, parameters, schema): ")
-        df.show(10, false)
-      }
-
       println(s"Step 6... capturing invalid lines")
 
       val dfInvalidLines: DataFrame = getInvalidLines(df, INVALID_LINES).persist(StorageLevel.MEMORY_ONLY_SER)
@@ -114,13 +108,6 @@ class ProcessIngestion(iSpark: ISpark, ihdfs: Ihdfs, printDataFrame: Boolean = f
       val totalInvalidesLines = dfInvalidLines.count()
 
       println(s"... total invalid lines $totalInvalidesLines")
-
-      //print para teste apenas
-      if (printDataFrame) {
-        println("val dfInvalidLines: DataFrame = getInvalidLines(df, INVALID_LINES).persist: ")
-        dfInvalidLines.show(10, false)
-      }
-
 
       if (totalLines == totalInvalidesLines) {
         println("There is no data to process")
@@ -139,12 +126,6 @@ class ProcessIngestion(iSpark: ISpark, ihdfs: Ihdfs, printDataFrame: Boolean = f
       val totalValidesLines = dfValidLines.count()
 
       println(s"... total invalid lines $totalValidesLines")
-
-      //print para teste apenas
-      if (printDataFrame) {
-        println("val dfValidLines: DataFrame = getValidLines(df, INVALID_LINES).persist: ")
-        dfValidLines.show(10, false)
-      }
 
       if (totalValidesLines <= 0) {
         println("There is no data to process")

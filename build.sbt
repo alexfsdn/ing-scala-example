@@ -4,15 +4,21 @@ version := "0.1"
 
 scalaVersion := "2.11.12"
 
-libraryDependencies += "org.apache.spark" %% "spark-core" % "2.4.7" % Provided
-libraryDependencies += "org.apache.spark" %% "spark-sql" % "2.4.7" % Provided
-libraryDependencies += "org.apache.spark" %% "spark-hive" % "2.4.7" % Provided
-libraryDependencies += "org.apache.spark" %% "spark-mllib" % "2.2.0" % Provided
-libraryDependencies += "com.typesafe" % "config" % "1.3.3" % Provided
+val sparkVersion = "2.4.8"
+val sparkMllibVersion = "2.2.0"
+val configVersion = "1.3.3"
+val junitVersion = "4.12"
+val mockitoVersion = "1.10.19"
 
-libraryDependencies += "org.apache.spark" %% "spark-core" % "2.4.7" % Test
-libraryDependencies += "org.apache.spark" %% "spark-sql" % "2.4.7" % Test
-libraryDependencies += "org.apache.spark" %% "spark-hive" % "2.4.7" % Test
+libraryDependencies += "org.apache.spark" %% "spark-core" % sparkVersion % Provided
+libraryDependencies += "org.apache.spark" %% "spark-sql" % sparkVersion % Provided
+libraryDependencies += "org.apache.spark" %% "spark-hive" % sparkVersion % Provided
+libraryDependencies += "org.apache.spark" %% "spark-mllib" % sparkMllibVersion % Provided
+libraryDependencies += "com.typesafe" % "config" % configVersion % Provided
 
-libraryDependencies += "junit" % "junit" % "4.12" % Test
-libraryDependencies += "org.mockito" % "mockito-all" % "1.10.19" % Test
+libraryDependencies += "org.apache.spark" %% "spark-core" % sparkVersion % Test
+libraryDependencies += "org.apache.spark" %% "spark-sql" % sparkVersion % Test
+libraryDependencies += "org.apache.spark" %% "spark-hive" % sparkVersion % Test
+
+libraryDependencies += "junit" % "junit" % junitVersion % Test
+libraryDependencies += "org.mockito" % "mockito-all" % mockitoVersion % Test

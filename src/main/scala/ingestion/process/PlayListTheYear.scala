@@ -8,7 +8,7 @@ import org.apache.spark.sql.functions.{avg, col, collect_set, count, countDistin
 import org.apache.spark.storage.StorageLevel
 import org.joda.time.LocalDateTime
 
-class PlayListTheYear(iSpark: ISpark, validParamUtils: ValidParamUtils, printDataFrame: Boolean = false) {
+class PlayListTheYear(iSpark: ISpark, validParamUtils: ValidParamUtils) {
   private var TABLE_NAME_INGESTION = ""
 
   private var USER_TABLE = ""
@@ -60,20 +60,9 @@ class PlayListTheYear(iSpark: ISpark, validParamUtils: ValidParamUtils, printDat
     println(s"consulting $USER_TABLE...")
     val dfUser = iSpark.get(s"select * from $USER_TABLE").persist(StorageLevel.MEMORY_ONLY_SER)
 
-    //print para teste apenas
-    if (printDataFrame) {
-      println(s" val dfUser = iSpark.get(select * from $USER_TABLE)")
-      dfUser.show(10, false)
-    }
 
     println(s"consulting $PLAY_LIST_TABLE...")
     val dfPlayList = iSpark.get(s"select * from $PLAY_LIST_TABLE").persist(StorageLevel.MEMORY_ONLY_SER)
-
-    //print para teste apenas
-    if (printDataFrame) {
-      println(s" val dfPlayList = iSpark.get(select * from $PLAY_LIST_TABLE)")
-      dfPlayList.show(10, false)
-    }
 
     println(s"building dfFinal ...")
     val dfJoin = dfUser.as("u").join(dfPlayList.as("p"))
@@ -103,12 +92,6 @@ class PlayListTheYear(iSpark: ISpark, validParamUtils: ValidParamUtils, printDat
         col("year_month"))
 
     dfJoin.unpersist()
-
-    //print para teste apenas
-    if (printDataFrame) {
-      println(s" dfPerfil... ")
-      dfPerfil.show(10, false)
-    }
 
     println(s"building partitionName and ingestionTimeStamp ...")
     val partitionName = TodayUtilsImpl.getToday()
