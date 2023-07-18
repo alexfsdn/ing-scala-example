@@ -4,12 +4,11 @@ import ingestion.base.config.{Config, Tables}
 import ingestion.base.dados.{ISpark, Ihdfs}
 import ingestion.base.enums.StatusEnums
 import ingestion.util.impl.TodayUtilsImpl
-import ingestion.util.{CaptureParition, TodayUtils}
+import ingestion.util.{CaptureParition}
 import org.apache.spark.sql.DataFrame
 import org.apache.spark.sql.functions.{col, current_timestamp, lit}
 import org.apache.spark.sql.types.{StringType, StructType}
 import org.apache.spark.storage.StorageLevel
-import org.dmg.pmml.False
 import org.json4s._
 import org.json4s.jackson.JsonMethods._
 
