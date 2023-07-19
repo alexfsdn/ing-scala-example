@@ -28,8 +28,7 @@ object SparkSessionServices {
 
       val conf = new SparkConf().setAppName("App Name example prod")
         .set("hive.exec.dynamic.partition.mode", "nonstrict")
-        .set("spark.some.config.option", "some-value")
-        .set("spark.sql.catalogImplementation", "hive")
+        //.set("spark.sql.catalogImplementation", "hive")
 
       val spark = SparkSession.builder()
         .appName("test")
